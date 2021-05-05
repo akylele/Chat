@@ -1,49 +1,49 @@
 const initialState = {
-    activeChat: null,
-    filteredChats: null,
-    chats: [],
+    activeRoom: null,
+    filteredRooms: null,
+    rooms: [],
     loading: false
 }
 export default function uiReducer(state = initialState, action) {
     switch (action.type) {
-        case "LOAD_CHATS_SUCCESS":
+        case "LOAD_ROOMS_SUCCESS":
             return {
                 ...state,
-                chats: action.payload,
+                rooms: action.payload,
                 loading: false
             }
-        case "LOAD_CHATS_ERROR":
+        case "LOAD_ROOMS_ERROR":
             return {
                 ...state,
                 loading: false,
                 error: action.error
             }
-        case "LOAD_CHATS_START":
+        case "LOAD_ROOMS_START":
             return {
                 ...state,
                 loading: true
             }
-        case "SET_ACTIVE_CHAT":
+        case "SET_ACTIVE_ROOM":
             return {
                 ...state,
-                activeChat: action.payload
+                activeRoom: action.payload
             }
-        case "SET_FILTERED_CHATS":
+        case "SET_FILTERED_ROOMS":
             return {
                 ...state,
-                filteredChats: action.payload
+                filteredRooms: action.payload
             }
-        case "CREATE_CHAT_START":
+        case "CREATE_ROOM_START":
             return {
                 ...state,
                 loading: true
             }
-        case "CREATE_CHAT_SUCCESS":
+        case "CREATE_ROOM_SUCCESS":
             return {
                 ...state,
                 loading: false
             }
-        case "CREATE_CHAT_ERROR":
+        case "CREATE_ROOM_ERROR":
             return {
                 ...state,
                 loading: false

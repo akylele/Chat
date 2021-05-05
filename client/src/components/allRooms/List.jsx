@@ -10,15 +10,15 @@ const Container = styled.div`
   overflow-y: scroll;
 `;
 
-const List = ({filteredChats, chats, activeChat, handleChangeActive}) => {
+const List = ({filteredRooms, rooms, activeRoom, handleChangeActive}) => {
 
     return (
         <Container>
-            {(filteredChats || chats).map((chat, index) => (
+            {(filteredRooms || rooms).map((room, index) => (
                 <Item
-                    active={chat._id === activeChat}
+                    active={room._id === activeRoom}
                     key={index}
-                    chat={chat}
+                    room={room}
                     handleChangeActive={handleChangeActive}
                 />
             ))}

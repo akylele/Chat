@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 
 import List from "./List";
 import Header from "./Header";
-import {createChatStart, setActiveChat, setFilteredChats} from "../../redux/actions/rooms";
+import {createRoomStart, setActiveRoom, setFilteredRooms} from "../../redux/actions/rooms";
 import Input from "../Basic/Input";
 import Row from "../Basic/Row";
 
@@ -20,27 +20,27 @@ const Container = styled.div`
 `;
 
 
-const AllChats = (props) => {
+const AllRooms = (props) => {
 
-    const handleNewChat = (title) => {
-        props.createChat(title)
+    const handleNewRoom = (title) => {
+        props.createRoom(title)
     }
 
     const handleSearch = (e) => {
         if (e.target.value) {
-            return props.setFilteredChats(props.chats.filter(elem => elem.title.includes(e.target.value)))
+            return props.setFilteredRooms(props.rooms.filter(elem => elem.title.includes(e.target.value)))
         }
 
-        return props.setFilteredChats(null)
+        return props.setFilteredRooms(null)
     }
 
     const handleChangeActive = (id) => {
-        props.setActiveChat(id)
+        props.setActiveRoom(id)
     }
 
     return (
         <Container>
-            <Header handleNewChat={handleNewChat}/>
+            <Header handleNewRoom={handleNewRoom}/>
             <Row>
                 <Input
                     icon={'search'}
@@ -49,9 +49,9 @@ const AllChats = (props) => {
             </Row>
             <List
                 handleChangeActive={handleChangeActive}
-                filteredChats={props.filteredChats}
-                activeChat={props.activeChat}
-                chats={props.chats}
+                filteredRooms={props.filteredRooms}
+                activeRoom={props.activeRoom}
+                rooms={props.rooms}
             />
         </Container>
     )
@@ -59,15 +59,15 @@ const AllChats = (props) => {
 
 
 const mapStateToProps = (state) => ({
-    chats: state.chats.chats,
-    filteredChats: state.chats.filteredChats,
-    activeChat: state.chats.activeChat
+    rooms: state.rooms.rooms,
+    filteredRooms: state.rooms.filteredRooms,
+    activeRoom: state.rooms.activeRoom
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    setFilteredChats: chats => dispatch(setFilteredChats(chats)),
-    setActiveChat: chat => dispatch(setActiveChat(chat)),
-    createChat: title => dispatch(createChatStart(title)),
+    setFilteredRooms: rooms => dispatch(setFilteredRooms(rooms)),
+    setActiveRoom: room => dispatch(setActiveRoom(room)),
+    createRoom: title => dispatch(createRoomStart(title)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(AllChats)
+export default connect(mapStateToProps, mapDispatchToProps)(AllRooms)

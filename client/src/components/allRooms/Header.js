@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 
-import NewChat from "./NewChat";
+import NewRoom from "./NewRoom";
 import CircleButton from "../Basic/CircleButton";
 import Title from "../Basic/Title";
 import Row from "../Basic/Row";
@@ -13,9 +13,9 @@ const Header = (props) => {
         setIsAdd(!isAdd)
     }
 
-    const handleNewChat = (value) => {
+    const handleNewRoom = (value) => {
         setIsAdd(!isAdd)
-        props.handleNewChat(value)
+        props.handleNewRoom(value)
     }
 
     return (
@@ -29,7 +29,7 @@ const Header = (props) => {
             </Row>
             {isAdd && (
                 <Col>
-                    <NewChat handleNewChat={handleNewChat}/>
+                    <NewRoom handleNewRoom={handleNewRoom}/>
                 </Col>
             )}
         </>

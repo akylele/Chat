@@ -76,10 +76,10 @@ const Col = styled.div`;
   `}
 `;
 
-const Item = ({active, handleChangeActive, chat}) => (
+const Item = ({active, handleChangeActive, room}) => (
     <Block
         active={active}
-        onClick={() => handleChangeActive(chat._id)}
+        onClick={() => handleChangeActive(room._id)}
     >
         <Col width={20}>
             <Photo>
@@ -87,12 +87,12 @@ const Item = ({active, handleChangeActive, chat}) => (
             </Photo>
         </Col>
         <Col width={55}>
-            <Title>{chat.title}</Title>
-            <Message>{chat.lastMessage}</Message>
+            <Title>{room.title}</Title>
+            <Message>{room.lastMessage}</Message>
         </Col>
         <Col end width={25}>
-            {chat.dateOfLastMessage && <Date>{getTime(chat.dateOfLastMessage)}</Date>}
-            {chat.counter && <Quantity>{chat.counter}</Quantity>}
+            {room.dateOfLastMessage && <Date>{getTime(room.dateOfLastMessage)}</Date>}
+            {room.counter && <Quantity>{room.counter}</Quantity>}
         </Col>
     </Block>
 )

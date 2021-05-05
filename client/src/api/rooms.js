@@ -1,11 +1,11 @@
 import { api } from '../'
 
-export const getAllChats = () => {
+export const getAllRooms = () => {
     return api
         .get('/room/getAll')
 }
 
-export const createChat = (query) => {
+export const createRoom = (query) => {
     return api
         .post('/room/create', query)
 }

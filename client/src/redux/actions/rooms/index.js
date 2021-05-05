@@ -1,48 +1,48 @@
 import {
-    CREATE_CHAT_START,
-    CREATE_CHAT_SUCCESS,
-    CREATE_CHAT_ERROR,
-    LOAD_CHATS_START,
-    LOAD_CHATS_SUCCESS,
-    LOAD_CHATS_ERROR,
-    SET_ACTIVE_CHAT,
-    SET_FILTERED_CHATS
+    CREATE_ROOM_START,
+    CREATE_ROOM_SUCCESS,
+    CREATE_ROOM_ERROR,
+    LOAD_ROOMS_START,
+    LOAD_ROOMS_SUCCESS,
+    LOAD_ROOMS_ERROR,
+    SET_ACTIVE_ROOM,
+    SET_FILTERED_ROOMS
 } from "../../action-types";
 
-export const setActiveChat = activeChat => ({
-    type: SET_ACTIVE_CHAT,
-    payload: activeChat
+export const setActiveRoom = activeRoom => ({
+    type: SET_ACTIVE_ROOM,
+    payload: activeRoom
 })
 
-export const setFilteredChats = filteredChats => ({
-    type: SET_FILTERED_CHATS,
-    payload: filteredChats
+export const setFilteredRooms = filteredRooms => ({
+    type: SET_FILTERED_ROOMS,
+    payload: filteredRooms
 })
 
-export const loadChatsStart = () => ({
-    type: LOAD_CHATS_START,
+export const loadRoomsStart = () => ({
+    type: LOAD_ROOMS_START,
 })
 
-export const loadChatsSuccess = (payload) => ({
-    type: LOAD_CHATS_SUCCESS,
+export const loadRoomsSuccess = (payload) => ({
+    type: LOAD_ROOMS_SUCCESS,
     payload
 })
 
-export const loadChatsError = (error) => ({
-    type: LOAD_CHATS_ERROR,
+export const loadRoomsError = (error) => ({
+    type: LOAD_ROOMS_ERROR,
     error
 })
 
-export const createChatStart = (title) => ({
-    type: CREATE_CHAT_START,
+export const createRoomStart = (title) => ({
+    type: CREATE_ROOM_START,
     title
 })
 
-export const createChatSuccess = () => ({
-    type: CREATE_CHAT_SUCCESS,
+export const createRoomSuccess = () => ({
+    type: CREATE_ROOM_SUCCESS,
 })
 
-export const createChatError = (error) => ({
-    type: CREATE_CHAT_ERROR,
+export const createRoomError = (error) => ({
+    type: CREATE_ROOM_ERROR,
     error
 })

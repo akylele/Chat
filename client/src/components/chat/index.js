@@ -30,15 +30,15 @@ const NotifyBlock = styled.div`
 
 const Chat = (props) => {
     // const [messages, setMessages] = useState([])
-    const [currentChat, setCurrentChat] = useState()
+    const [currentRoom, setCurrentRoom] = useState()
     const windowWidth = window.innerWidth
 
     useEffect(() => {
-        if (props.activeChat !== null) {
-            setCurrentChat(props.chats.filter(chat => chat.id === props.activeChat)[0])
+        if (props.activeRoom !== null) {
+            setCurrentRoom(props.rooms.filter(room => room.id === props.activeRoom)[0])
             // setMessages(props.rooms.filter(client => client.id === props.activeChat)[0].messages)
         }
-    }, [props.activeChat])
+    }, [props.rooms])
 
     const sendMessage = (message) => {
         // setMessages(messages.concat({
@@ -47,7 +47,7 @@ const Chat = (props) => {
         // }))
     }
 
-    if (props.activeChat === null) {
+    if (props.activeRoom === null) {
         return (
             <Container>
                 <NotifyBlock>выберите чат</NotifyBlock>
@@ -55,14 +55,14 @@ const Chat = (props) => {
         )
     }
 
-    if (!currentChat?.messages) {
+    if (!currentRoom?.messages) {
         return (
             <>
                 <Container>
                     <NotifyBlock>сообщений нет</NotifyBlock>
                     <NewMessage sendMessage={sendMessage}/>
                 </Container>
-                {windowWidth > 1050 && <UsersList users={currentChat?.usersOnline || []}/>}
+                {windowWidth > 1050 && <UsersList users={currentRoom?.usersOnline || []}/>}
             </>
         )
     }
@@ -70,19 +70,19 @@ const Chat = (props) => {
     return (
         <>
             <Container>
-                {!currentChat?.messages ?
+                {!currentRoom?.messages ?
                     <NotifyBlock>сообщений нет</NotifyBlock> :
-                    <Messages messages={currentChat.messages || []}/>}
+                    <Messages messages={currentRoom.messages || []}/>}
                 <NewMessage sendMessage={sendMessage}/>
             </Container>
-            {windowWidth > 1050 && <UsersList users={currentChat.usersOnline || []}/>}
+            {windowWidth > 1050 && <UsersList users={currentRoom.usersOnline || []}/>}
         </>
     );
 }
 
 const mapStateToProps = (state) => ({
-    chats: state.chats.chats,
-    activeChat: state.chats.activeChat
+    rooms: state.rooms.rooms,
+    activeRoom: state.rooms.activeRoom
 })
 
 const mapDispatchToProps = (dispatch) => ({})

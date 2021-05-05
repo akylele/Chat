@@ -3,7 +3,7 @@ import styled from "styled-components";
 import {connect} from "react-redux";
 
 import Header from "../components/Basic/Header";
-import AllChats from "../components/allRooms";
+import AllRooms from "../components/allRooms";
 import Chat from "../components/chat";
 import {logoutStart} from "../redux/actions/user";
 
@@ -23,7 +23,7 @@ const MainContainer = (props) => {
         <>
             <Header handleLogout={handleLogout} user={props.user}/>
             <Container>
-                <AllChats/>
+                <AllRooms/>
                 <Chat/>
             </Container>
         </>
