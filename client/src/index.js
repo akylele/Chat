@@ -3,12 +3,25 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {configureStore} from './redux/store'
+import { configureApi } from './api/index'
+import {Provider} from "react-redux";
+import {BrowserRouter as Router} from 'react-router-dom';
+import { createBrowserHistory } from "history";
+const history = createBrowserHistory();
+
+const store = configureStore();
+export const api = configureApi(store)
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+    <React.StrictMode>
+        <Provider store={store}>
+            <Router history={history}>
+                <App/>
+            </Router>
+        </Provider>
+    </React.StrictMode>,
+    document.getElementById('root')
 );
 
 // If you want to start measuring performance in your app, pass a function

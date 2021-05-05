@@ -1,0 +1,4 @@
+{
+  "port":5000,
+  "mongo": "mongodb+srv://edwebdev:akyleleFf9385@cluster0.r79gp.mongodb.net/chatDB?retryWrites=true&w=majority"
+}
