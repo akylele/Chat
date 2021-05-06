@@ -6,7 +6,6 @@ const TitleContainer = styled.h2`
   font-weight: bold;
   margin: 10px 0;
   text-overflow: ellipsis;
-  white-space: nowrap;
   overflow: hidden
 `;
 

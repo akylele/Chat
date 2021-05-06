@@ -17,8 +17,7 @@ const Container = styled.div`
 
 const Title = styled.h2`
   font-size: 30px;
-  width: min-content;
-  white-space: nowrap;
+  text-align: center;
 `;
 
 const InputBox = styled.div`

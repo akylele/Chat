@@ -17,10 +17,15 @@ const Container = styled.div`
   flex-direction: column;
   height: 100%;
   box-sizing: border-box;
+
+  @media (max-width: 500px) {
+    max-width: 100%;
+    min-width: 100%;
+  }
 `;
 
 
-const AllRooms = (props) => {
+const AllRoomsContainer = (props) => {
 
     const handleNewRoom = (title) => {
         props.createRoom(title)
@@ -36,6 +41,7 @@ const AllRooms = (props) => {
 
     const handleChangeActive = (id) => {
         props.setActiveRoom(id)
+        if(window.isMobileVersion) props.history.push('/chat')
     }
 
     return (
@@ -70,4 +76,4 @@ const mapDispatchToProps = (dispatch) => ({
     createRoom: title => dispatch(createRoomStart(title)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(AllRooms)
+export default connect(mapStateToProps, mapDispatchToProps)(AllRoomsContainer)

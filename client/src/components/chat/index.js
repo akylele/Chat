@@ -17,6 +17,12 @@ const Container = styled.div`
   box-sizing: border-box;
   position: relative;
   justify-content: flex-end;
+
+  @media (max-width: 500px) {
+    height: calc(100vh - 50px);
+    max-width: 100%;
+    min-width: 100%;
+  }
 `;
 
 const NotifyBlock = styled.div`
@@ -26,25 +32,49 @@ const NotifyBlock = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+
+  @media (max-width: 500px) {
+    width: 100%;
+    text-align: center;
+  }
+`
+
+const Details = styled.details`
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 100%;
+  box-shadow: 0 0 10px 1px grey;
+  background-color: white;
+`
+
+const Summary = styled.summary`
+
+`
+
+const Title = styled.h5`
+  font-size: 20px;
+  margin: 0;
+  width: 100%;
+  text-align: center;
+  height: 50px;
+  line-height: 50px;
 `
 
 const Chat = (props) => {
-    // const [messages, setMessages] = useState([])
-    const [currentRoom, setCurrentRoom] = useState()
-    const windowWidth = window.innerWidth
+    const [currentRoom, setCurrentRoom] = useState({
+        usersOnline: [],
+        messages: []
+    })
 
     useEffect(() => {
         if (props.activeRoom !== null) {
-            setCurrentRoom(props.rooms.filter(room => room.id === props.activeRoom)[0])
-            // setMessages(props.rooms.filter(client => client.id === props.activeChat)[0].messages)
+            setCurrentRoom(props.rooms.filter(room => room._id === props.activeRoom)[0])
         }
     }, [props.rooms])
 
     const sendMessage = (message) => {
-        // setMessages(messages.concat({
-        //     date: Date.now(),
-        //     text: message,
-        // }))
     }
 
     if (props.activeRoom === null) {
@@ -55,27 +85,49 @@ const Chat = (props) => {
         )
     }
 
-    if (!currentRoom?.messages) {
+    if (currentRoom.messages.length < 1) {
         return (
             <>
+                {window.isMobileVersion &&
+                <Title>{currentRoom.title}</Title>}
                 <Container>
+                    {window.isMobileVersion &&
+                    <Details>
+                        <Summary>Пользователи</Summary>
+                        <ul>
+                            {currentRoom.usersOnline.map(user => (
+                                <li>{user.name}</li>
+                            ))}
+                        </ul>
+                    </Details>}
                     <NotifyBlock>сообщений нет</NotifyBlock>
                     <NewMessage sendMessage={sendMessage}/>
                 </Container>
-                {windowWidth > 1050 && <UsersList users={currentRoom?.usersOnline || []}/>}
+                {!window.isMobileVersion && <UsersList users={currentRoom.usersOnline}/>}
             </>
         )
     }
 
     return (
         <>
+            {window.isMobileVersion &&
+            <Title>{currentRoom.title}</Title>}
             <Container>
-                {!currentRoom?.messages ?
+                {window.isMobileVersion &&
+                <Details>
+                    <Summary>Пользователи</Summary>
+                    <ul>
+                        {currentRoom.usersOnline.map(user => (
+                            <li>{user.name}</li>
+                        ))}
+                    </ul>
+                </Details>}
+                {!currentRoom.messages ?
                     <NotifyBlock>сообщений нет</NotifyBlock> :
-                    <Messages messages={currentRoom.messages || []}/>}
+                    <Messages messages={currentRoom.messages}/>}
                 <NewMessage sendMessage={sendMessage}/>
             </Container>
-            {windowWidth > 1050 && <UsersList users={currentRoom.usersOnline || []}/>}
+            {!window.isMobileVersion && <UsersList users={currentRoom.usersOnline}/>}
         </>
     );
 }
@@ -85,6 +137,4 @@ const mapStateToProps = (state) => ({
     activeRoom: state.rooms.activeRoom
 })
 
-const mapDispatchToProps = (dispatch) => ({})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Chat)
+export default connect(mapStateToProps, null)(Chat)
