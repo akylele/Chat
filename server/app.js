@@ -9,7 +9,7 @@ import createSocket from './core/socket'
 
 const app = express()
 const server = createServer(app);
-const io = createSocket(server);
+createSocket(server);
 
 app.use(bodyParser.json());
 app.use(cors({}));
@@ -29,9 +29,6 @@ mongoose.connect(
     .catch(error => console.log('==========>error', error))
 
 
-io.on('connection', () => {
-    console.log('==========>connection',)
-});
 server.listen(PORT, () => {
     console.log(`started on port ${PORT}`)
 });

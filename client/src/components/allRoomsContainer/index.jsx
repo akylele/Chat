@@ -4,9 +4,17 @@ import {connect} from "react-redux";
 
 import List from "./List";
 import Header from "./Header";
-import {createRoomStart, setActiveRoom, setFilteredRooms} from "../../redux/actions/rooms";
+import {
+    createRoomStart,
+    deleteRoomStart,
+    loadRoomByIdStart,
+    setActiveRoom,
+    setFilteredRooms
+} from "../../redux/actions/rooms";
 import Input from "../Basic/Input";
 import Row from "../Basic/Row";
+import {socket} from '../../socket';
+import {Toast} from "../../hooks/message.hook";
 
 const Container = styled.div`
   min-width: 400px;
@@ -28,7 +36,7 @@ const Container = styled.div`
 const AllRoomsContainer = (props) => {
 
     const handleNewRoom = (title) => {
-        props.createRoom(title)
+        props.createRoom({userId: props.userId, title})
     }
 
     const handleSearch = (e) => {
@@ -40,8 +48,22 @@ const AllRoomsContainer = (props) => {
     }
 
     const handleChangeActive = (id) => {
-        props.setActiveRoom(id)
-        if(window.isMobileVersion) props.history.push('/chat')
+        socket.emit('ROOM:JOIN', {userName: props.userName, roomId: id})
+
+        socket.on('SUCCESS-ROOM:JOIN', (data) => {
+            console.log('==========>data', data)
+            props.loadRoomById(id)
+            props.setActiveRoom(id)
+            if (window.isMobileVersion) props.history.push('/chat')
+            Toast(data.message)
+        })
+        socket.on('ERROR-ROOM:JOIN', (data) => {
+            Toast(data.message)
+        })
+    }
+
+    const handleRemove = (id) => {
+        props.deleteRoom(id)
     }
 
     return (
@@ -54,6 +76,8 @@ const AllRoomsContainer = (props) => {
                 />
             </Row>
             <List
+                userId={props.userId}
+                handleRemove={handleRemove}
                 handleChangeActive={handleChangeActive}
                 filteredRooms={props.filteredRooms}
                 activeRoom={props.activeRoom}
@@ -66,6 +90,8 @@ const AllRoomsContainer = (props) => {
 
 const mapStateToProps = (state) => ({
     rooms: state.rooms.rooms,
+    userId: state.user.userId,
+    userName: state.user.username,
     filteredRooms: state.rooms.filteredRooms,
     activeRoom: state.rooms.activeRoom
 })
@@ -73,7 +99,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     setFilteredRooms: rooms => dispatch(setFilteredRooms(rooms)),
     setActiveRoom: room => dispatch(setActiveRoom(room)),
-    createRoom: title => dispatch(createRoomStart(title)),
+    createRoom: data => dispatch(createRoomStart(data)),
+    loadRoomById: (id) => dispatch(loadRoomByIdStart(id)),
+    deleteRoom: (id) => dispatch(deleteRoomStart(id)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(AllRoomsContainer)

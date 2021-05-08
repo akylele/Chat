@@ -2,27 +2,29 @@ import React from 'react'
 import styled from 'styled-components';
 
 const InputInnerWrap = styled.div`
-  width: 100%;
-  position: relative;
-  display: flex;
-  border: 1px solid #ccc;
-  border-radius: 15px;
+  width: 100% !important;
+  position: relative !important;
+  display: flex !important;
+  border: 1px solid #ccc !important;
+  border-radius: 15px !important;
 `;
 
 const Wrap = styled.div`
-  width: 100%;
-  top: 50%;
+  width: 100% !important;
+  top: 50% !important;
 `;
 
 const InputValue = styled.input`
-  width: 100%;
-  border: none;
-  background: white;
-  padding: 5px 15px;
-  height: 26px;
-  border-radius: 15px 0 0 15px;
-  outline: none;
-  color: black;
+  width: 100% !important;
+  border: none !important;
+  background: white !important;
+  padding: 5px 15px !important;
+  height: 26px !important;
+  border-radius: 15px 0 0 15px !important;
+  outline: none !important;
+  color: black !important;
+  margin: 0 !important;
+  box-shadow: none !important;
 `;
 
 const Button = styled.button`

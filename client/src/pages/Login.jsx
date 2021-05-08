@@ -3,11 +3,13 @@ import styled from "styled-components";
 import {connect} from "react-redux";
 
 import {loginStart} from "../redux/actions/user";
+import Input from "../components/Basic/Input";
 
 
 const Container = styled.div`
   width: 100vw;
   height: 100vh;
+  padding: 0 15px;
   background-color: rgb(245, 245, 245);
   display: flex;
   flex-direction: column;
@@ -18,32 +20,6 @@ const Container = styled.div`
 const Title = styled.h2`
   font-size: 30px;
   text-align: center;
-`;
-
-const InputBox = styled.div`
-  width: 300px;
-  margin: 0 auto;
-  position: relative;
-  display: flex;
-  border: 1px solid #ccc;
-  border-radius: 15px;
-  justify-content: center;
-`;
-
-const Wrap = styled.div`
-  width: 100%;
-  top: 50%;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  border: none;
-  background: white;
-  padding: 5px 15px;
-  height: 26px;
-  border-radius: 15px;
-  outline: none;
-  color: black;
 `;
 
 const Confirm = styled.button`
@@ -72,14 +48,9 @@ const Login = (props) => {
     return (
         <Container>
             <Title>Введите имя чтобы продолжить</Title>
-            <Wrap>
-                <InputBox>
-                    <Input
-                        value={username}
-                        onChange={handleChangeName}
-                    />
-                </InputBox>
-            </Wrap>
+            <Input
+                handleChange={handleChangeName}
+            />
             <Confirm onClick={handleConfirm}>
                 Войти
             </Confirm>

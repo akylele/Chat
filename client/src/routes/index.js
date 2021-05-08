@@ -1,5 +1,5 @@
 import React from 'react'
-import {Switch, Route, Redirect, useHistory} from 'react-router-dom'
+import {Redirect, Route, Switch, useHistory} from 'react-router-dom'
 
 import Login from "../pages/Login";
 import AllRooms from "../pages/AllRooms";
@@ -13,13 +13,21 @@ function useRoutes() {
             <Route exact path="/login">
                 <Login history={history}/>
             </Route>
-
-            <Route exact path="/pickup">
-                <AllRooms history={history}/>
-            </Route>
-            <Route exact path="/chat">
-                <Chat history={history}/>
-            </Route>
+            {window.isMobileVersion ? (
+                <>
+                    <Route exact path="/pickup">
+                        <AllRooms history={history}/>
+                    </Route>
+                    <Route exact path="/chat">
+                        <Chat history={history}/>
+                    </Route>
+                </>
+            ) : (
+                <Route exact path="/chat">
+                    <AllRooms history={history}/>
+                    {/*<Chat history={history}/>*/}
+                </Route>
+            )}
             <Redirect to="/login"/>
         </Switch>
     )

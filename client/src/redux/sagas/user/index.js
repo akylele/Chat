@@ -4,6 +4,7 @@ import {LOGIN_START, LOGOUT_START} from "../../action-types";
 import {loginError, loginSuccess, logoutError, logoutSuccess} from "../../actions/user";
 import {login, logout} from "../../../api/auth";
 import {setStep} from "../../actions/ui";
+import {Toast} from "../../../hooks/message.hook";
 
 export default function* authWatcher() {
     yield takeLatest(LOGIN_START, loginSaga)
@@ -12,12 +13,13 @@ export default function* authWatcher() {
 
 function* loginSaga(payload) {
     try {
-        const responseUser = yield call(login, {username: payload.username})
+        const response = yield call(login, {username: payload.username})
         yield put(loginSuccess({
-            username: responseUser.data.username,
-            userId: responseUser.data.userId
+            username: response.data.username,
+            userId: response.data.userId
         }))
-        yield put(setStep("CHAT"))
+        Toast(response.data.message)
+        yield put(setStep(window.isMobileVersion ? "PICKUP" : "CHAT"))
     } catch (e) {
         yield put(loginError(e))
     }
@@ -25,8 +27,9 @@ function* loginSaga(payload) {
 
 function* logoutSaga(payload) {
     try {
-        yield call(logout, {userId: payload.userId})
+        const response = yield call(logout, {userId: payload.userId})
         yield put(logoutSuccess())
+        Toast(response.data.message)
         yield put(setStep("LOGIN"))
     } catch (e) {
         yield put(logoutError(e))

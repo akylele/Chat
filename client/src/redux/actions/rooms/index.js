@@ -6,7 +6,12 @@ import {
     LOAD_ROOMS_SUCCESS,
     LOAD_ROOMS_ERROR,
     SET_ACTIVE_ROOM,
-    SET_FILTERED_ROOMS
+    SET_FILTERED_ROOMS,
+    LOAD_ROOM_BY_ID_START,
+    LOAD_ROOM_BY_ID_SUCCESS,
+    LOAD_ROOM_BY_ID_ERROR,
+    NEW_USERS_FOR_ROOM,
+    DELETE_ROOM_START, DELETE_ROOM_SUCCESS, DELETE_ROOM_ERROR
 } from "../../action-types";
 
 export const setActiveRoom = activeRoom => ({
@@ -28,21 +33,52 @@ export const loadRoomsSuccess = (payload) => ({
     payload
 })
 
-export const loadRoomsError = (error) => ({
+export const loadRoomsError = () => ({
     type: LOAD_ROOMS_ERROR,
+})
+
+export const deleteRoomStart = (id) => ({
+    type: DELETE_ROOM_START,
+    id
+})
+
+export const deleteRoomSuccess = () => ({
+    type: DELETE_ROOM_SUCCESS
+})
+
+export const deleteRoomError = () => ({
+    type: DELETE_ROOM_ERROR,
+})
+
+export const loadRoomByIdStart = (id) => ({
+    type: LOAD_ROOM_BY_ID_START,
+    id
+})
+
+export const loadRoomByIdSuccess = (payload) => ({
+    type: LOAD_ROOM_BY_ID_SUCCESS,
+    payload
+})
+
+export const loadRoomByIdError = (error) => ({
+    type: LOAD_ROOM_BY_ID_ERROR,
     error
 })
 
-export const createRoomStart = (title) => ({
+export const createRoomStart = (data) => ({
     type: CREATE_ROOM_START,
-    title
+    payload: data
 })
 
 export const createRoomSuccess = () => ({
     type: CREATE_ROOM_SUCCESS,
 })
 
-export const createRoomError = (error) => ({
-    type: CREATE_ROOM_ERROR,
-    error
+export const createRoomError = () => ({
+    type: CREATE_ROOM_ERROR
+})
+
+export const newUsersForRoom = (payload) => ({
+    type: NEW_USERS_FOR_ROOM,
+    payload
 })

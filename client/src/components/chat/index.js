@@ -64,7 +64,7 @@ const Title = styled.h5`
 
 const Chat = (props) => {
     const [currentRoom, setCurrentRoom] = useState({
-        usersOnline: [],
+        users: [],
         messages: []
     })
 
@@ -84,7 +84,6 @@ const Chat = (props) => {
             </Container>
         )
     }
-
     if (currentRoom.messages.length < 1) {
         return (
             <>
@@ -95,7 +94,7 @@ const Chat = (props) => {
                     <Details>
                         <Summary>Пользователи</Summary>
                         <ul>
-                            {currentRoom.usersOnline.map(user => (
+                            {currentRoom.users.map(user => (
                                 <li>{user.name}</li>
                             ))}
                         </ul>
@@ -103,7 +102,7 @@ const Chat = (props) => {
                     <NotifyBlock>сообщений нет</NotifyBlock>
                     <NewMessage sendMessage={sendMessage}/>
                 </Container>
-                {!window.isMobileVersion && <UsersList users={currentRoom.usersOnline}/>}
+                {!window.isMobileVersion && <UsersList users={currentRoom.users}/>}
             </>
         )
     }
@@ -117,7 +116,7 @@ const Chat = (props) => {
                 <Details>
                     <Summary>Пользователи</Summary>
                     <ul>
-                        {currentRoom.usersOnline.map(user => (
+                        {currentRoom.users.map(user => (
                             <li>{user.name}</li>
                         ))}
                     </ul>
@@ -127,7 +126,7 @@ const Chat = (props) => {
                     <Messages messages={currentRoom.messages}/>}
                 <NewMessage sendMessage={sendMessage}/>
             </Container>
-            {!window.isMobileVersion && <UsersList users={currentRoom.usersOnline}/>}
+            {!window.isMobileVersion && <UsersList users={currentRoom.users}/>}
         </>
     );
 }

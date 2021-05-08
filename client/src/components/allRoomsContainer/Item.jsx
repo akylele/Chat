@@ -4,7 +4,7 @@ import styled, {css} from 'styled-components';
 import {getTime} from "../../utils/dateFormatter";
 
 const Block = styled.div`
-  width: calc(100% - 20px);
+  width: 100%;
   margin-bottom: 20px;
   padding: 10px;
   display: flex;
@@ -17,10 +17,10 @@ const Block = styled.div`
     background-color: rgb(47, 52, 67);
     color: white
   `}
-  
+
 `;
 
-const Photo = styled.div`
+const Icon = styled.i`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -65,8 +65,8 @@ const Col = styled.div`;
   flex-direction: column;
   justify-content: space-around;
   padding: 2px 5px;
-  overflow: hidden;
-  
+  //overflow: hidden;
+
   ${props => props.width && css`
     width: ${props.width}rem;
   `}
@@ -76,24 +76,31 @@ const Col = styled.div`;
   `}
 `;
 
-const Item = ({active, handleChangeActive, room}) => (
+const Item = ({active, handleChangeActive, room, handleRemove, userId}) => (
     <Block
-        active={active}
-        onClick={() => handleChangeActive(room._id)}
+        active={window.isMobileVersion ? false : active }
     >
-        <Col width={20}>
-            <Photo>
-                <img src="https://mk0leanfrontierqpi7o.kinstacdn.com/wp-content/uploads/2018/12/logo-placeholder-png.png" alt=""/>
-            </Photo>
-        </Col>
-        <Col width={55}>
-            <Title>{room.title}</Title>
-            <Message>{room.lastMessage}</Message>
-        </Col>
-        <Col end width={25}>
-            {room.dateOfLastMessage && <Date>{getTime(room.dateOfLastMessage)}</Date>}
-            {room.counter && <Quantity>{room.counter}</Quantity>}
-        </Col>
+        {room.creator === userId && <Col width={20}>
+            <Icon
+                className="material-icons"
+                onClick={() => handleRemove(room._id)}
+            >
+                delete
+            </Icon>
+        </Col>}
+        <div
+            onClick={() => handleChangeActive(room._id)}
+        >
+            <Col width={55}>
+                <Title>{room.title}</Title>
+                <Message>{room.lastMessage}</Message>
+            </Col>
+            <Col end width={25}>
+                {room.dateOfLastMessage && <Date>{getTime(room.dateOfLastMessage)}</Date>}
+                {room.counter && <Quantity>{room.counter}</Quantity>}
+            </Col>
+        </div>
+
     </Block>
 )
 

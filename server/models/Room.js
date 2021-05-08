@@ -12,9 +12,10 @@ const schema = new Schema({
     dateOfLastMessage: {
         type: Date,
     },
-    usersOnline: {
+    users: {
         type: [{
-            name: String
+            name: String,
+            status: String
         }],
     },
     messages: {

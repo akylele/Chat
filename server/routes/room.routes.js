@@ -18,10 +18,10 @@ router.post(
             })
         }
 
-        const {title} = req.body
+        const {title, userId} = req.body
 
         try {
-            const candidate = await User.findOne({title})
+            const candidate = await Room.findOne({title})
 
             if (candidate) {
                 return res.status(423).json({message: 'Такая комната уже существует'})
@@ -29,6 +29,7 @@ router.post(
 
             const room = new Room({
                 title,
+                creator: userId
             })
 
             await room.save()
@@ -51,6 +52,31 @@ router.get(
             return res.status(200).json(rooms)
         } catch (e) {
             return res.status(500).json({message: 'ошибка получения'})
+        }
+    })
+
+router.get(
+    '/:id',
+    async (req, res) => {
+        try {
+            const id = req.params.id
+            const room = await Room.find({_id: id})
+
+            return res.status(200).json(room)
+        } catch (e) {
+            return res.status(500).json({message: 'ошибка получения'})
+        }
+    })
+
+router.delete(
+    '/:id',
+    async (req, res) => {
+        try {
+            const roomId = req.params.id
+            await Room.deleteOne({_id: roomId})
+            return res.status(200).json({message: 'успешное удаление'})
+        } catch (e) {
+            return res.status(500).json({message: 'ошибка удаления'})
         }
     })
 

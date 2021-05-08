@@ -6,6 +6,21 @@ const initialState = {
 }
 export default function uiReducer(state = initialState, action) {
     switch (action.type) {
+        case "DELETE_ROOM_SUCCESS":
+            return {
+                ...state,
+                loading: false
+            }
+        case "DELETE_ROOM_ERROR":
+            return {
+                ...state,
+                loading: false,
+            }
+        case "DELETE_ROOM_START":
+            return {
+                ...state,
+                loading: true
+            }
         case "LOAD_ROOMS_SUCCESS":
             return {
                 ...state,
@@ -16,12 +31,45 @@ export default function uiReducer(state = initialState, action) {
             return {
                 ...state,
                 loading: false,
-                error: action.error
             }
         case "LOAD_ROOMS_START":
             return {
                 ...state,
                 loading: true
+            }
+        case "LOAD_ROOM_BY_ID_SUCCESS":
+            const newRooms = state.rooms.map(room => {
+                if (room._id === action.payload._id) {
+                    room = action.payload
+                }
+
+                return room
+            })
+            return {
+                ...state,
+                rooms: newRooms,
+                loading: false
+            }
+        case "LOAD_ROOM_BY_ID_ERROR":
+            return {
+                ...state,
+                loading: false,
+            }
+        case "LOAD_ROOM_BY_ID_START":
+            return {
+                ...state,
+                loading: true
+            }
+        case "NEW_USERS_FOR_ROOM":
+            return {
+                ...state,
+                rooms: state.rooms.map(room => {
+                    if (room => room._id === action.payload.roomId) {
+                        room.users = action.payload.users
+                    }
+
+                    return room
+                })
             }
         case "SET_ACTIVE_ROOM":
             return {

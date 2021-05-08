@@ -1,13 +1,11 @@
 import socket from 'socket.io'
 
-import RoomsModel from "../models/Room";
+import Room from "../models/Room";
 
 export default (http) => {
     const io = socket(http, {
         cors: {
             origin: "http://localhost:3000",
-            methods: ["GET", "POST"],
-            allowedHeaders: ["my-custom-header"],
             credentials: true
         }
     });
@@ -15,82 +13,34 @@ export default (http) => {
     io.on('connection', function (socket) {
         socket.on('ROOM:JOIN', async ({roomId, userName}) => {
             socket.join(roomId);
-
-            const candidate = await RoomsModel.findOne({
-                roomId
-            });
-            let users = [];
-            let todos = [];
-
+            const candidate = await Room.findOne({_id: roomId})
+            const newUsers = candidate.users.concat({name: userName, status: 'online'})
             if (candidate) {
-
-                const sortSocketUser = [...candidate.users, {id: socket.id, userName}].filter(item => !!item.id)
-                let updated = {users: sortSocketUser}
-
                 try {
-                    await RoomsModel.findOneAndUpdate(
-                        {
-                            roomId
-                        },
-                        {
-                            $set: updated
-                        },
-                        {new: true},
-                        (err, doc) => {
-                            if (err || !doc) {
-                                socket.to(candidate.roomId).broadcast.emit('error', err);
-                            } else {
-                                users = doc.users.map(item => item.userName)
-                                todos = doc.todos
+                    await Room.findOneAndUpdate({_id: roomId}, {
+                        $set:
+                            {
+                                users: newUsers
                             }
-                        });
+                    })
+                    socket.emit('SUCCESS-ROOM:JOIN', {message: 'Вы вошли в комнату'})
                 } catch (e) {
-                    console.log('----->e', e)
+                    socket.emit('ERROR-ROOM:JOIN', {message: 'Ошибка сервера'})
                 }
+            } else {
+                socket.emit('ERROR-ROOM:JOIN', {message: 'Такой пользователь уже есть'})
             }
-            socket.to(roomId).broadcast.emit('ROOM:SET_USERS', users, todos);
+
+            socket.to(roomId).emit('ROOM:UPDATE_USERS', {users: newUsers, roomId});
         });
 
-        socket.on('ROOM:NEW_TODO', async ({roomId, userName, text, checked}) => {
-            const obj = {
-                userName,
-                text,
-                checked
-            };
-            const candidate = await RoomsModel.findOne({
-                roomId
-            });
-            if (candidate) {
-
-                const sortSocketTodos = [obj, ...candidate.todos.reverse()].slice(0, 20).reverse()
-                let updated = {
-                    todos: sortSocketTodos
-                }
-                try {
-                    await RoomsModel.findOneAndUpdate(
-                        {
-                            roomId
-                        },
-                        {
-                            $set: updated
-                        },
-                        {new: true},
-                        (err, doc) => {
-                            if (err || !doc) {
-                                socket.to(candidate.roomId).broadcast.emit('error', err);
-                            } else {
-                                io.in(roomId).emit('ROOM:NEW_TODO', doc.todos);
-                            }
-                        });
-                } catch (e) {
-                    console.log('----->e', e)
-                }
-            }
+        socket.on('ROOM:DELETE', async ({roomId}) => {
+            socket.to(roomId).emit('ROOM:DELETE_ROOM', {message: 'эта комната была удалена'});
         });
 
         socket.on('ROOM:UPDATE_TODO', async ({roomId, todo}) => {
 
-            const candidate = await RoomsModel.findOne({
+            const candidate = await Room.findOne({
                 roomId
             });
 
@@ -98,7 +48,7 @@ export default (http) => {
                 const updatedSocketTodos = candidate.todos.map(item => todo._id == item._id ? todo : item)
                 const updated = {todos: updatedSocketTodos}
                 try {
-                    await RoomsModel.findOneAndUpdate(
+                    await Room.findOneAndUpdate(
                         {
                             roomId
                         },
@@ -121,7 +71,7 @@ export default (http) => {
 
         socket.on('ROOM:DELETE_TODO', async ({roomId, todo}) => {
 
-            const candidate = await RoomsModel.findOne({
+            const candidate = await Room.findOne({
                 roomId
             });
             if (candidate) {
@@ -134,7 +84,7 @@ export default (http) => {
                 })
                 const updated = {todos: deletedSocketTodos}
                 try {
-                    await RoomsModel.findOneAndUpdate(
+                    await Room.findOneAndUpdate(
                         {
                             roomId
                         },
@@ -156,8 +106,9 @@ export default (http) => {
         });
 
         socket.on('disconnect', async () => {
+            console.log('==========>socket.id', socket.id)
             let users = [];
-            const candidate = await RoomsModel.findOne({'users.id': socket.id})
+            const candidate = await Room.findOne({'users.id': socket.id})
 
             if (candidate) {
 
@@ -165,7 +116,7 @@ export default (http) => {
                 let updated = {users: sortSocketUser}
 
                 try {
-                    await RoomsModel.findOneAndUpdate(
+                    await Room.findOneAndUpdate(
                         {'users.id': socket.id},
                         {
                             $set: updated
