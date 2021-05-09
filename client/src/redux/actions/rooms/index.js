@@ -11,7 +11,7 @@ import {
     LOAD_ROOM_BY_ID_SUCCESS,
     LOAD_ROOM_BY_ID_ERROR,
     NEW_USERS_FOR_ROOM,
-    DELETE_ROOM_START, DELETE_ROOM_SUCCESS, DELETE_ROOM_ERROR
+    DELETE_ROOM_START, DELETE_ROOM_SUCCESS, DELETE_ROOM_ERROR, NEW_MESSAGES_FOR_ROOM
 } from "../../action-types";
 
 export const setActiveRoom = activeRoom => ({
@@ -80,5 +80,10 @@ export const createRoomError = () => ({
 
 export const newUsersForRoom = (payload) => ({
     type: NEW_USERS_FOR_ROOM,
+    payload
+})
+
+export const newMessagesForRoom = (payload) => ({
+    type: NEW_MESSAGES_FOR_ROOM,
     payload
 })

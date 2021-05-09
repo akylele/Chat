@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 
 const InputInnerWrap = styled.div`
   width: 100% !important;
@@ -25,9 +25,13 @@ const InputValue = styled.input`
   color: black !important;
   margin: 0 !important;
   box-shadow: none !important;
+
+  ${props => props.borderFull && css`
+    border-radius: 15px !important;
+  `}
 `;
 
-const Button = styled.button`
+const Button = styled.div`
   width: 40px;
   height: 36px;
   border: none;
@@ -43,20 +47,23 @@ const Icon = styled.i`
   line-height: 36px
 `
 
-const Input = ({icon, handleChange, handleClick}) => (
+const Input = ({icon, handleChange, handleClick, value}) => (
     <Wrap>
         <InputInnerWrap>
-            <InputValue onChange={handleChange}/>
-            <Button>
-                {icon && (
+            {value !== undefined
+                ? <InputValue borderFull={!icon} onChange={handleChange} value={value}/>
+                : <InputValue borderFull={!icon} onChange={handleChange}/>
+            }
+            {icon && (
+                <Button>
                     <Icon
                         className="material-icons"
                         onClick={handleClick}
                     >
                         {icon}
                     </Icon>
-                )}
-            </Button>
+                </Button>
+            )}
         </InputInnerWrap>
     </Wrap>
 )

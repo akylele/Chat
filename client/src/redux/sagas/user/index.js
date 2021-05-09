@@ -14,16 +14,19 @@ export default function* authWatcher() {
 
 function* loginSaga({data}) {
     try {
-        const response = yield call(login, {username: data.username, socketId: data.socketId})
+        const {username, password, socketId} = data
+        const response = yield call(login, {username, password, socketId})
         yield put(loginSuccess({
             username: response.data.username,
             userId: response.data.userId,
             socketId: response.data.socketId
         }))
+        socket.connect()
         Toast(response.data.message)
         yield put(setStep(window.isMobileVersion ? "PICKUP" : "CHAT"))
     } catch (e) {
-        yield put(loginError(e))
+        Toast(e?.response?.data?.message)
+        yield put(loginError())
     }
 }
 
@@ -31,10 +34,12 @@ function* logoutSaga(payload) {
     try {
         const response = yield call(logout, {userId: payload.userId})
         yield put(logoutSuccess())
-        socket.emit('disconnect', payload.userId)
+        socket.disconnect()
+        // socket.emit('disconnect', payload.userId)
         Toast(response.data.message)
         yield put(setStep("LOGIN"))
     } catch (e) {
+        Toast(e?.response?.data?.message)
         yield put(logoutError(e))
     }
 }

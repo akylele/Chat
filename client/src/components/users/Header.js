@@ -1,11 +1,9 @@
 import React from 'react'
-import styled from 'styled-components';
-import Title from "../Basic/Title";
 
 const Header = (props) => (
-    <Title>
+    <h5>
         Участники ({props.length})
-    </Title>
+    </h5>
 )
 
 export default Header

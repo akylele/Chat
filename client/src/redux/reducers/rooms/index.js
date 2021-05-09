@@ -71,6 +71,17 @@ export default function uiReducer(state = initialState, action) {
                     return room
                 })
             }
+        case "NEW_MESSAGES_FOR_ROOM":
+            return {
+                ...state,
+                rooms: state.rooms.map(room => {
+                    if (room => room._id === action.payload.roomId) {
+                        room.messages = action.payload.messages
+                    }
+
+                    return room
+                })
+            }
         case "SET_ACTIVE_ROOM":
             return {
                 ...state,

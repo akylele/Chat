@@ -22,8 +22,8 @@ const schema = new Schema({
     messages: {
         type: [{
             from: String,
-            date: Date,
-            text: String
+            text: String,
+            date: Date
         }],
     },
 

@@ -10,27 +10,34 @@ const Container = styled.div`
 `;
 
 
-const NewMessage = ({sendMessage}) => {
+const NewMessage = (props) => {
     const [message, setMessage] = useState('')
-    window.onkeypress = handle;
 
     const inputChangeValue = (e) => {
         setMessage(e.target.value)
     }
 
-    function handle(e) {
-        if ((e.keyCode === 13 && message.length) || message.length) {
+    function handleMessage() {
+        if (message.length) {
             setMessage('')
-            sendMessage(message)
+            props.sendMessage(message)
         }
     }
 
+    // const handleKeyPress = (event) => {
+    //     if (event.keyCode === 13 && message.length) {
+    //         setMessage('')
+    //         props.sendMessage(message)
+    //     }
+    // }
 
     return (
         <Container>
             <Input
+                value={message}
                 icon={'send'}
-                handleClick={handle}
+                handleClick={handleMessage}
+                // onKeyPress={handleKeyPress}
                 handleChange={(e) => inputChangeValue(e)}
             />
         </Container>

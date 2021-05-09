@@ -37,6 +37,7 @@ const Confirm = styled.button`
 
 const Login = (props) => {
     const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
     const [socketId, setSocketId] = useState(null)
 
     socket.on('CONNECTED', ({socketId}) => {
@@ -47,15 +48,23 @@ const Login = (props) => {
         setUsername(e.target.value)
     }
 
+    const handleChangePassword = (e) => {
+        setPassword(e.target.value)
+    }
+
     const handleConfirm = () => {
-        props.loginStart({username, socketId})
+        props.loginStart({username, password, socketId})
     }
 
     return (
         <Container>
-            <Title>Введите имя чтобы продолжить</Title>
+            <Title>Введите имя</Title>
             <Input
                 handleChange={handleChangeName}
+            />
+            <Title>Введите пароль</Title>
+            <Input
+                handleChange={handleChangePassword}
             />
             <Confirm onClick={handleConfirm}>
                 Войти

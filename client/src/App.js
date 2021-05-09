@@ -5,7 +5,7 @@ import {connect} from "react-redux";
 import {useHistory} from "react-router-dom";
 import Loader from "./components/Basic/Loader";
 import {socket} from './socket';
-import {loadRoomsStart, newUsersForRoom, setActiveRoom} from "./redux/actions/rooms";
+import {loadRoomsStart, newMessagesForRoom, newUsersForRoom, setActiveRoom} from "./redux/actions/rooms";
 import {Toast} from "./hooks/message.hook";
 import {setStep} from "./redux/actions/ui";
 
@@ -24,6 +24,15 @@ function App(props) {
     socket.off('ROOM:UPDATE_USERS').on('ROOM:UPDATE_USERS', (data) => {
         console.log('==========>обновляем юзеров')
         props.newUsersForRoom(data)
+    })
+
+    socket.off('ROOM:UPDATE_MESSAGES').on('ROOM:UPDATE_MESSAGES', (data) => {
+        console.log('==========>обновляем сообщения')
+        props.newMessagesForRoom(data)
+    })
+
+    socket.off('ROOM:JOIN_CREATOR').on('ROOM:JOIN_CREATOR', (text) => {
+        Toast(text)
     })
 
     useEffect(() => {
@@ -54,6 +63,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = dispatch => ({
     newUsersForRoom: data => dispatch(newUsersForRoom(data)),
+    newMessagesForRoom: data => dispatch(newMessagesForRoom(data)),
     setStep: step => dispatch(setStep(step)),
     setActiveRoom: room => dispatch(setActiveRoom(room)),
     loadRoomsStart: () => dispatch(loadRoomsStart()),

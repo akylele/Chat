@@ -47,7 +47,7 @@ const Name = styled.div`
   `}
 `
 
-const Messages = ({messages}) => {
+const Messages = ({messages,username}) => {
     useEffect(() => {
         document.getElementById('last-message')?.scrollIntoView()
     })
@@ -55,8 +55,8 @@ const Messages = ({messages}) => {
     return (
         <Container id="messages">
             {messages.map((message, index) => (
-                <Message personal={!message.from} id={index === messages.length - 1 ? "last-message" : ''} key={index}>
-                    <Name personal={!message.from}>{message.from} {getTime(message.date)}</Name>
+                <Message personal={message.from === username} id={index === messages.length - 1 ? "last-message" : ''} key={index}>
+                    <Name personal={message.from === username}>{message.from} {getTime(message.date)}</Name>
                     {message.text}
                 </Message>
             ))}

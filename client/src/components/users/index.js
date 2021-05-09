@@ -6,7 +6,7 @@ import List from "./List";
 import Row from "../Basic/Row";
 
 const Container = styled.div`
-  width: 20%;
+  width: 40%;
   padding: 10px 20px;
   display: flex;
   flex-direction: column;
@@ -20,9 +20,9 @@ const UsersList = (props) => {
     return (
         <Container>
             <Row>
-                <Header length={props.users.length}/>
+                <Header length={props.currentRoom.users.length}/>
             </Row>
-            <List users={props.users}/>
+            <List users={props.currentRoom.users} creator={props.currentRoom.creator}/>
         </Container>
     );
 }

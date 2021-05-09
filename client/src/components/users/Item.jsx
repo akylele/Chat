@@ -34,7 +34,7 @@ const Col = styled.div`;
 const Item = (props) => (
     <Block>
         <Col>
-            <span>{props.user.name}</span>
+            <span>{props.user.name}{props.creator && ' - создатель'}</span>
         </Col>
     </Block>
 )

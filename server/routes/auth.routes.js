@@ -7,6 +7,8 @@ router.post(
     '/login',
     [
         check('username', 'Минимальная длина имени 4 символов')
+            .isLength({min: 4}),
+        check('password', 'Минимальная длина пароля 4 символов')
             .isLength({min: 4})
     ],
     async (req, res) => {
@@ -14,32 +16,39 @@ router.post(
 
         if (!errors.isEmpty()) {
             return res.status(411).json({
-                message: 'Минимальная длина имени 4 символов'
+                message: 'Минимальная длина имени и пароля 4 символов'
             })
         }
 
-        const {username, socketId} = req.body
+        const {username, password, socketId} = req.body
 
         try {
             const candidate = await User.findOne({username})
+            if (candidate && candidate.password === password) {
+                res.status(201).json({
+                    message: `Вы вошли - ${username}`,
+                    userId: candidate._id,
+                    username,
+                    socketId
+                })
+            } else if (candidate && candidate.password !== password) {
+                return res.status(423).json({message: 'неверный пароль к этому юзеру'})
+            } else {
+                const user = new User({
+                    username,
+                    password,
+                    socketId
+                })
 
-            if (candidate) {
-                return res.status(423).json({message: 'Такой пользователь уже существует'})
+                await user.save()
+
+                res.status(201).json({
+                    message: `Вы вошли - ${username}`,
+                    userId: user._id,
+                    username,
+                    socketId
+                })
             }
-
-            const user = new User({
-                username,
-                socketId
-            })
-
-            await user.save()
-
-            res.status(201).json({
-                message: `Вы вошли - ${username}`,
-                userId: user._id,
-                username,
-                socketId
-            })
         } catch (e) {
             return res.status(500).json({message: 'Ошибка авторизации'})
         }

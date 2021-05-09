@@ -6,6 +6,7 @@ import NewMessage from "./NewMessage";
 import Messages from "./Messages";
 import UsersList from "../users";
 import {setActiveRoom} from "../../redux/actions/rooms";
+import {socket} from "../../socket";
 
 const Container = styled.div`
   width: 100%;
@@ -80,7 +81,11 @@ const Chat = (props) => {
             props.setActiveRoom(null)
         }
     }, [props.rooms])
+
     const sendMessage = (message) => {
+        socket.emit('ROOM:NEW_MESSAGE', {
+            message, username: props.username, roomId: currentRoom._id
+        })
     }
 
     if (props.activeRoom === null) {
@@ -108,7 +113,7 @@ const Chat = (props) => {
                     <NotifyBlock>сообщений нет</NotifyBlock>
                     <NewMessage sendMessage={sendMessage}/>
                 </Container>
-                {!window.isMobileVersion && <UsersList users={currentRoom.users}/>}
+                {!window.isMobileVersion && <UsersList currentRoom={currentRoom}/>}
             </>
         )
     }
@@ -129,17 +134,18 @@ const Chat = (props) => {
                 </Details>}
                 {!currentRoom.messages ?
                     <NotifyBlock>сообщений нет</NotifyBlock> :
-                    <Messages messages={currentRoom.messages}/>}
+                    <Messages messages={currentRoom.messages} username={props.username}/>}
                 <NewMessage sendMessage={sendMessage}/>
             </Container>
-            {!window.isMobileVersion && <UsersList users={currentRoom.users}/>}
+            {!window.isMobileVersion && <UsersList currentRoom={currentRoom}/>}
         </>
     );
 }
 
 const mapStateToProps = (state) => ({
     rooms: state.rooms.rooms,
-    activeRoom: state.rooms.activeRoom
+    activeRoom: state.rooms.activeRoom,
+    username: state.user.username
 })
 
 const mapDispatchToProps = dispatch => ({

@@ -28,6 +28,7 @@ function* loadRoomsSaga() {
         const responseRooms = yield call(getAllRooms)
         yield put(loadRoomsSuccess(responseRooms.data))
     } catch (e) {
+        Toast(e?.response?.data?.message)
         yield put(loadRoomsError())
     }
 }
@@ -38,6 +39,7 @@ function* createRoomSaga({payload}) {
         yield put(createRoomSuccess())
         Toast(response.data.message)
     } catch (e) {
+        Toast(e?.response?.data?.message)
         yield put(createRoomError())
     }
 }
@@ -48,6 +50,7 @@ function* loadRoomByIdSaga(payload) {
         yield put(loadRoomByIdSuccess(response.data.pop()))
         Toast(response.data.message)
     } catch (e) {
+        Toast(e?.response?.data?.message)
         yield put(loadRoomByIdError())
     }
 }
@@ -64,6 +67,7 @@ function* deleteRoomSaga(payload) {
         }
         yield put(loadRoomsStart())
     } catch (e) {
+        Toast(e?.response?.data?.message)
         yield put(deleteRoomError())
     }
 }

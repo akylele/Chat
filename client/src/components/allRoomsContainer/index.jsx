@@ -7,7 +7,6 @@ import Header from "./Header";
 import {
     createRoomStart,
     deleteRoomStart,
-    loadRoomByIdStart,
     loadRoomsStart,
     setActiveRoom,
     setFilteredRooms
@@ -48,16 +47,14 @@ const AllRoomsContainer = (props) => {
     }
 
     const handleChangeActive = async (id) => {
-        const prevActiveRoom = props.activeRoom
-        socket.emit('ROOM:EXIT', {userName: props.user.username, roomId: prevActiveRoom})
+        if (id !== props.activeRoom) {
+            const prevActiveRoom = props.activeRoom
+            socket.emit('ROOM:EXIT', {userName: props.user.username, roomId: prevActiveRoom})
 
-        props.setActiveRoom(id)
-        if (window.isMobileVersion) props.history.push('/chat')
-        socket.emit('ROOM:JOIN', {user: props.user, roomId: id})
-        setTimeout(() => {
-            props.loadRoomById(id)
-        },1000)
-
+            props.setActiveRoom(id)
+            if (window.isMobileVersion) props.history.push('/chat')
+            socket.emit('ROOM:JOIN', {user: props.user, roomId: id})
+        }
     }
 
     const handleRemove = (id) => {
@@ -101,7 +98,6 @@ const mapDispatchToProps = (dispatch) => ({
     setFilteredRooms: rooms => dispatch(setFilteredRooms(rooms)),
     setActiveRoom: room => dispatch(setActiveRoom(room)),
     createRoom: data => dispatch(createRoomStart(data)),
-    loadRoomById: (id) => dispatch(loadRoomByIdStart(id)),
     deleteRoom: (id) => dispatch(deleteRoomStart(id)),
     loadRooms: () => dispatch(loadRoomsStart()),
 })
