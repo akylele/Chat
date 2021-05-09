@@ -14,20 +14,18 @@ function App(props) {
     const routes = useRoutes()
     window.isMobileVersion = window.innerWidth < 768
 
-    useEffect(() => {
-        socket.on('ROOM:DELETE_ROOM', data => {
-            Toast(data.message)
-            props.setStep(window.isMobileVersion ? 'PICKUP' : 'CHAT')
-            props.setActiveRoom(null)
-            props.loadRoomsStart()
-        })
+    socket.off('ROOM:DELETE_ROOM').on('ROOM:DELETE_ROOM', data => {
+        Toast(data.message)
+        props.setStep(window.isMobileVersion ? 'PICKUP' : 'CHAT')
+        props.setActiveRoom(null)
+        props.loadRoomsStart()
+    })
 
-        socket.on('ROOM:UPDATE_USERS', (data) => {
-            console.log('==========>обновляем юзеров')
-            props.newUsersForRoom(data)
-        })
-    },[])
-    
+    socket.off('ROOM:UPDATE_USERS').on('ROOM:UPDATE_USERS', (data) => {
+        console.log('==========>обновляем юзеров')
+        props.newUsersForRoom(data)
+    })
+
     useEffect(() => {
         if (props.step === 'PICKUP') {
             return history.push('/pickup')

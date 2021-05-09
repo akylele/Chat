@@ -7,9 +7,9 @@ import {
     LOGOUT_SUCCESS,
 } from "../../action-types";
 
-export const loginStart = (username) => ({
+export const loginStart = (data) => ({
     type: LOGIN_START,
-    username
+    data
 })
 
 export const loginSuccess = (payload) => ({

@@ -13,23 +13,19 @@ export default (http) => {
     io.on('connection', function (socket) {
         socket.emit('CONNECTED', {socketId: socket.id})
 
-        socket.on('ROOM:JOIN', async ({roomId, userName}) => {
+        socket.on('ROOM:JOIN', async ({roomId, user: userData}) => {
             socket.join(roomId);
             const candidate = await Room.findOne({_id: roomId})
-
             if (candidate) {
-                const thisUser = candidate.users.filter(user => user.name === userName)
-                if (thisUser.length === 0) {
-                    const newUsers = candidate.users.concat({name: userName, status: 'online'})
+                const newUsers = candidate.users.concat({...userData, name: userData.username, status: 'online'})
 
-                    await Room.updateOne({_id: roomId}, {
-                        $set:
-                            {
-                                users: newUsers
-                            }
-                    })
-                    socket.to(roomId).emit('ROOM:UPDATE_USERS', {users: newUsers, roomId});
-                }
+                await Room.updateOne({_id: roomId}, {
+                    $set:
+                        {
+                            users: newUsers
+                        }
+                })
+                socket.to(roomId).emit('ROOM:UPDATE_USERS', {users: newUsers, roomId});
             }
         });
 
@@ -52,69 +48,21 @@ export default (http) => {
             }
         });
 
-        socket.on('ROOM:UPDATE_TODO', async ({roomId, todo}) => {
-
-            const candidate = await Room.findOne({
-                roomId
-            });
-
-            if (candidate) {
-                const updatedSocketTodos = candidate.todos.map(item => todo._id == item._id ? todo : item)
-                const updated = {todos: updatedSocketTodos}
-                try {
-                    await Room.findOneAndUpdate(
+        socket.on('disconnect', async (userId) => {
+            const candidate = await Room.find({'users._id': userId})
+            if (candidate.length > 0) {
+                const newUsers = candidate[0].users.filter(user => user.socketId !== socket.id)
+                await Room.updateOne({_id: candidate[0]._id}, {
+                    $set:
                         {
-                            roomId
-                        },
-                        {
-                            $set: updated
-                        },
-                        {new: true},
-                        (err, doc) => {
-                            if (err || !doc) {
-                                console.log('----->e', err)
-                            } else {
-                                io.in(roomId).emit('ROOM:ALL_TODOS', doc.todos);
-                            }
-                        });
-                } catch (e) {
-                    console.log('----->e', e)
-                }
+                            users: newUsers
+                        }
+                })
+                const roomId = candidate[0]._id
+                io.in(roomId).emit('ROOM:UPDATE_USERS', {users: newUsers, roomId});
+                socket.to(roomId).emit('ROOM:UPDATE_USERS', {users: newUsers, roomId});
             }
         });
-
-        socket.on('disconnect', async () => {
-            let users = [];
-            const candidate = await Room.findOne({'users.id': socket.id})
-
-            if (candidate) {
-
-                const sortSocketUser = candidate.users.filter(item => item.id !== socket.id)
-                let updated = {users: sortSocketUser}
-
-                try {
-                    await Room.findOneAndUpdate(
-                        {'users.id': socket.id},
-                        {
-                            $set: updated
-                        },
-                        {new: true},
-                        (err, doc) => {
-                            if (err || !doc) {
-                                console.log('----->e', err)
-                            } else {
-                                users = doc.users.map(item => item.userName)
-
-                            }
-                        });
-                } catch (e) {
-                    console.log('----->e', e)
-                }
-                io.in(candidate.roomId).emit('ROOM:SET_USERS', users, candidate.todos);
-            }
-
-        });
-        console.log('user connected', socket.id);
     });
 
     return io;

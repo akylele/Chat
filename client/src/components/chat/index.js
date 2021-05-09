@@ -8,8 +8,6 @@ import UsersList from "../users";
 import {setActiveRoom} from "../../redux/actions/rooms";
 
 const Container = styled.div`
-  max-width: 100rem;
-  min-width: 30rem;
   width: 100%;
   padding: 10px 20px;
   display: flex;
@@ -21,8 +19,6 @@ const Container = styled.div`
 
   @media (max-width: 500px) {
     height: calc(100vh - 50px);
-    max-width: 100%;
-    min-width: 100%;
   }
 `;
 
@@ -73,7 +69,12 @@ const Chat = (props) => {
 
     useEffect(() => {
         if (props.activeRoom !== null && props.rooms.length > 0) {
-            setCurrentRoom(props.rooms.filter(room => room._id === props.activeRoom)[0])
+            if (props.rooms.filter(room => room._id === props.activeRoom).length > 0) {
+                setCurrentRoom(props.rooms.filter(room => room._id === props.activeRoom)[0])
+            } else {
+                setCurrentRoom(initialState)
+                props.setActiveRoom(null)
+            }
         } else {
             setCurrentRoom(initialState)
             props.setActiveRoom(null)

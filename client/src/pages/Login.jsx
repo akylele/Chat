@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 
 import {loginStart} from "../redux/actions/user";
 import Input from "../components/Basic/Input";
+import {socket} from "../socket";
 
 
 const Container = styled.div`
@@ -36,13 +37,18 @@ const Confirm = styled.button`
 
 const Login = (props) => {
     const [username, setUsername] = useState('')
+    const [socketId, setSocketId] = useState(null)
+
+    socket.on('CONNECTED', ({socketId}) => {
+        setSocketId(socketId)
+    })
 
     const handleChangeName = (e) => {
         setUsername(e.target.value)
     }
 
     const handleConfirm = () => {
-        props.loginStart(username)
+        props.loginStart({username, socketId})
     }
 
     return (
@@ -59,7 +65,7 @@ const Login = (props) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    loginStart: (username) => dispatch(loginStart(username))
+    loginStart: (data) => dispatch(loginStart(data))
 })
 
 export default connect(null, mapDispatchToProps)(Login)

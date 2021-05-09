@@ -18,7 +18,7 @@ router.post(
             })
         }
 
-        const {username} = req.body
+        const {username, socketId} = req.body
 
         try {
             const candidate = await User.findOne({username})
@@ -29,6 +29,7 @@ router.post(
 
             const user = new User({
                 username,
+                socketId
             })
 
             await user.save()
@@ -36,7 +37,8 @@ router.post(
             res.status(201).json({
                 message: `Вы вошли - ${username}`,
                 userId: user._id,
-                username
+                username,
+                socketId
             })
         } catch (e) {
             return res.status(500).json({message: 'Ошибка авторизации'})

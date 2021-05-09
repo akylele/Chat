@@ -17,8 +17,8 @@ import Row from "../Basic/Row";
 import {socket} from '../../socket';
 
 const Container = styled.div`
-  min-width: 400px;
-  max-width: 400px;
+  min-width: 300px;
+  max-width: 300px;
   padding: 10px 20px;
   background-color: rgb(245, 245, 245);
   display: flex;
@@ -36,7 +36,7 @@ const Container = styled.div`
 const AllRoomsContainer = (props) => {
 
     const handleNewRoom = (title) => {
-        props.createRoom({userId: props.userId, title})
+        props.createRoom({userId: props.user.userId, title})
     }
 
     const handleSearch = (e) => {
@@ -49,11 +49,11 @@ const AllRoomsContainer = (props) => {
 
     const handleChangeActive = async (id) => {
         const prevActiveRoom = props.activeRoom
-        socket.emit('ROOM:EXIT', {userName: props.userName, roomId: prevActiveRoom})
+        socket.emit('ROOM:EXIT', {userName: props.user.username, roomId: prevActiveRoom})
 
         props.setActiveRoom(id)
         if (window.isMobileVersion) props.history.push('/chat')
-        socket.emit('ROOM:JOIN', {userName: props.userName, roomId: id})
+        socket.emit('ROOM:JOIN', {user: props.user, roomId: id})
         setTimeout(() => {
             props.loadRoomById(id)
         },1000)
@@ -78,7 +78,7 @@ const AllRoomsContainer = (props) => {
                 />
             </Row>
             <List
-                userId={props.userId}
+                userId={props.user.userId}
                 handleRemove={handleRemove}
                 handleChangeActive={handleChangeActive}
                 filteredRooms={props.filteredRooms}
@@ -92,8 +92,7 @@ const AllRoomsContainer = (props) => {
 
 const mapStateToProps = (state) => ({
     rooms: state.rooms.rooms,
-    userId: state.user.userId,
-    userName: state.user.username,
+    user: state.user,
     filteredRooms: state.rooms.filteredRooms,
     activeRoom: state.rooms.activeRoom
 })

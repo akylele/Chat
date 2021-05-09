@@ -6,8 +6,7 @@ import List from "./List";
 import Row from "../Basic/Row";
 
 const Container = styled.div`
-  max-width: 20rem;
-  width: 100%;
+  width: 20%;
   padding: 10px 20px;
   display: flex;
   flex-direction: column;

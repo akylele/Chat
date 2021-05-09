@@ -1,4 +1,4 @@
-import {call, put, takeLatest} from 'redux-saga/effects'
+import {call, put, select, takeLatest} from 'redux-saga/effects'
 
 import {
     CREATE_ROOM_START,
@@ -10,7 +10,7 @@ import {
     createRoomError,
     createRoomSuccess, deleteRoomError, deleteRoomSuccess, loadRoomByIdError, loadRoomByIdSuccess,
     loadRoomsError, loadRoomsStart,
-    loadRoomsSuccess
+    loadRoomsSuccess, setActiveRoom
 } from "../../actions/rooms";
 import {createRoom, getAllRooms, getRoomById, removeRoomById} from "../../../api/rooms";
 import {Toast} from "../../../hooks/message.hook";
@@ -53,11 +53,15 @@ function* loadRoomByIdSaga(payload) {
 }
 
 function* deleteRoomSaga(payload) {
+    const activeRoomId = yield select(store => store.rooms.activeRoom)
     try {
         const response = yield call(removeRoomById, payload.id)
         yield put(deleteRoomSuccess())
         Toast(response.data.message)
         socket.emit('ROOM:DELETE', {roomId: payload.id})
+        if(activeRoomId === payload.id){
+            yield put(setActiveRoom(null))
+        }
         yield put(loadRoomsStart())
     } catch (e) {
         yield put(deleteRoomError())

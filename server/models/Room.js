@@ -15,7 +15,8 @@ const schema = new Schema({
     users: {
         type: [{
             name: String,
-            status: String
+            status: String,
+            socketId: String
         }],
     },
     messages: {
