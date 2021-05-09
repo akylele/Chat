@@ -8,13 +8,13 @@ import {
     createRoomStart,
     deleteRoomStart,
     loadRoomByIdStart,
+    loadRoomsStart,
     setActiveRoom,
     setFilteredRooms
 } from "../../redux/actions/rooms";
 import Input from "../Basic/Input";
 import Row from "../Basic/Row";
 import {socket} from '../../socket';
-import {Toast} from "../../hooks/message.hook";
 
 const Container = styled.div`
   min-width: 400px;
@@ -47,28 +47,30 @@ const AllRoomsContainer = (props) => {
         return props.setFilteredRooms(null)
     }
 
-    const handleChangeActive = (id) => {
-        socket.emit('ROOM:JOIN', {userName: props.userName, roomId: id})
+    const handleChangeActive = async (id) => {
+        const prevActiveRoom = props.activeRoom
+        socket.emit('ROOM:EXIT', {userName: props.userName, roomId: prevActiveRoom})
 
-        socket.on('SUCCESS-ROOM:JOIN', (data) => {
-            console.log('==========>data', data)
+        props.setActiveRoom(id)
+        if (window.isMobileVersion) props.history.push('/chat')
+        socket.emit('ROOM:JOIN', {userName: props.userName, roomId: id})
+        setTimeout(() => {
             props.loadRoomById(id)
-            props.setActiveRoom(id)
-            if (window.isMobileVersion) props.history.push('/chat')
-            Toast(data.message)
-        })
-        socket.on('ERROR-ROOM:JOIN', (data) => {
-            Toast(data.message)
-        })
+        },1000)
+
     }
 
     const handleRemove = (id) => {
         props.deleteRoom(id)
     }
 
+    const handleReload = () => {
+        props.loadRooms()
+    }
+
     return (
         <Container>
-            <Header handleNewRoom={handleNewRoom}/>
+            <Header handleNewRoom={handleNewRoom} handleReload={handleReload}/>
             <Row>
                 <Input
                     icon={'search'}
@@ -102,6 +104,7 @@ const mapDispatchToProps = (dispatch) => ({
     createRoom: data => dispatch(createRoomStart(data)),
     loadRoomById: (id) => dispatch(loadRoomByIdStart(id)),
     deleteRoom: (id) => dispatch(deleteRoomStart(id)),
+    loadRooms: () => dispatch(loadRoomsStart()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(AllRoomsContainer)

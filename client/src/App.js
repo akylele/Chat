@@ -4,7 +4,7 @@ import {useEffect} from "react";
 import {connect} from "react-redux";
 import {useHistory} from "react-router-dom";
 import Loader from "./components/Basic/Loader";
-import {socket} from '../src/socket';
+import {socket} from './socket';
 import {loadRoomsStart, newUsersForRoom, setActiveRoom} from "./redux/actions/rooms";
 import {Toast} from "./hooks/message.hook";
 import {setStep} from "./redux/actions/ui";
@@ -15,19 +15,16 @@ function App(props) {
     window.isMobileVersion = window.innerWidth < 768
 
     useEffect(() => {
-        if (props.activeRoom) {
-            socket.on('ROOM:UPDATE_USERS', (data) => {
-                props.newUsersForRoom(data)
-            })
-        }
-    }, [props.activeRoom])
-
-    useEffect(() => {
         socket.on('ROOM:DELETE_ROOM', data => {
             Toast(data.message)
             props.setStep(window.isMobileVersion ? 'PICKUP' : 'CHAT')
             props.setActiveRoom(null)
             props.loadRoomsStart()
+        })
+
+        socket.on('ROOM:UPDATE_USERS', (data) => {
+            console.log('==========>обновляем юзеров')
+            props.newUsersForRoom(data)
         })
     },[])
     
@@ -53,14 +50,15 @@ function App(props) {
 
 const mapStateToProps = (state) => ({
     step: state.ui.step,
-    activeRoom: state.rooms.activeRoom
+    activeRoom: state.rooms.activeRoom,
+    userId: state.user.userId,
 })
 
 const mapDispatchToProps = dispatch => ({
     newUsersForRoom: data => dispatch(newUsersForRoom(data)),
     setStep: step => dispatch(setStep(step)),
     setActiveRoom: room => dispatch(setActiveRoom(room)),
-    loadRoomsStart: () => dispatch(loadRoomsStart())
+    loadRoomsStart: () => dispatch(loadRoomsStart()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

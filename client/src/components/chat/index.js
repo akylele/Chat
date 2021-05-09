@@ -5,6 +5,7 @@ import {connect} from "react-redux";
 import NewMessage from "./NewMessage";
 import Messages from "./Messages";
 import UsersList from "../users";
+import {setActiveRoom} from "../../redux/actions/rooms";
 
 const Container = styled.div`
   max-width: 100rem;
@@ -62,18 +63,22 @@ const Title = styled.h5`
   line-height: 50px;
 `
 
+const initialState = {
+    users: [],
+    messages: []
+}
+
 const Chat = (props) => {
-    const [currentRoom, setCurrentRoom] = useState({
-        users: [],
-        messages: []
-    })
+    const [currentRoom, setCurrentRoom] = useState(initialState)
 
     useEffect(() => {
-        if (props.activeRoom !== null) {
+        if (props.activeRoom !== null && props.rooms.length > 0) {
             setCurrentRoom(props.rooms.filter(room => room._id === props.activeRoom)[0])
+        } else {
+            setCurrentRoom(initialState)
+            props.setActiveRoom(null)
         }
     }, [props.rooms])
-
     const sendMessage = (message) => {
     }
 
@@ -136,4 +141,9 @@ const mapStateToProps = (state) => ({
     activeRoom: state.rooms.activeRoom
 })
 
-export default connect(mapStateToProps, null)(Chat)
+const mapDispatchToProps = dispatch => ({
+    setActiveRoom: room => dispatch(setActiveRoom(room)),
+})
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Chat)

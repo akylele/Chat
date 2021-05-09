@@ -5,6 +5,7 @@ const schema = new Schema({
         type:String,
         required:true
     },
+    socketId: String
 })
 
 module.exports = model('User', schema)
