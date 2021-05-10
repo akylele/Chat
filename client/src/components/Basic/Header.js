@@ -6,13 +6,13 @@ import CircleButton from "./CircleButton";
 const Name = styled.h2`
   font-size: 26px;
   font-weight: bold;
-  margin: 10px 30px;
+  margin: 10px 20px;
 `;
 
 const Title = styled.h2`
   font-size: 26px;
   font-weight: bold;
-  margin: 10px 30px;
+  margin: 10px 20px;
 `;
 
 const Container = styled.div`
@@ -28,7 +28,7 @@ const Container = styled.div`
 const Wrapper = styled.div`
   align-items: center;
   display: flex;
-  margin: 0 15px;
+  margin: 0 20px;
 `;
 
 const Header = (props) => (
