@@ -1,8 +1,7 @@
 import React, {useEffect} from 'react';
 import styled, {css} from 'styled-components';
-import {connect} from "react-redux";
 
-import {getTime} from "../../utils/dateFormatter";
+import {getTime, getTimeShort} from "../../utils/dateFormatter";
 
 const Container = styled.div`
   height: 100vh;
@@ -10,11 +9,13 @@ const Container = styled.div`
   position: relative;
   box-sizing: border-box;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Message = styled.div`
   position: relative;
-  min-height: 40px;
+  //min-height: 40px;
   padding: 10px 10px 20px 10px;
   border-radius: 15px 5px 15px 5px;
   left: 0;
@@ -32,6 +33,17 @@ const Message = styled.div`
   `}
 `;
 
+const ServiceMessage = styled.div`
+  box-shadow: none;
+  width: min-content;
+  white-space: nowrap;
+  border-radius: 15px;
+  padding: 5px;
+  background-color: #b9b9b9;
+  opacity: 0.8;
+  margin: 0 auto 15px auto;
+`
+
 const Name = styled.div`
   position: absolute;
   padding: 5px 10px;
@@ -47,19 +59,40 @@ const Name = styled.div`
   `}
 `
 
-const Messages = ({messages,username}) => {
+const Messages = ({messages, username}) => {
+    const personalMessage = (message) => message.from === username
+
     useEffect(() => {
         document.getElementById('last-message')?.scrollIntoView()
     })
 
     return (
         <Container id="messages">
-            {messages.map((message, index) => (
-                <Message personal={message.from === username} id={index === messages.length - 1 ? "last-message" : ''} key={index}>
-                    <Name personal={message.from === username}>{message.from} {getTime(message.date)}</Name>
-                    {message.text}
-                </Message>
-            ))}
+            {messages.map((message, index) => {
+                if (message.from === 'service') {
+                    return (
+                        <ServiceMessage
+                            key={index}
+                            id={index === messages.length - 1 ? "last-message" : ''}
+                        >
+                            {message.text}{' '}{getTimeShort(message.date)}
+                        </ServiceMessage>
+                    )
+                } else {
+                    return (
+                        <Message
+                            personal={personalMessage(message)}
+                            id={index === messages.length - 1 ? "last-message" : ''}
+                            key={index}
+                        >
+                            <Name personal={personalMessage(message)}>
+                                {personalMessage(message) ? 'Вы' : message.from} {getTime(message.date)}
+                            </Name>
+                            {message.text}
+                        </Message>
+                    )
+                }
+            })}
         </Container>
     );
 }

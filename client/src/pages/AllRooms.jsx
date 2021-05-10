@@ -2,9 +2,10 @@ import React from 'react';
 import styled from "styled-components";
 import {connect} from "react-redux";
 
+import {logoutStart} from "../redux/actions/user";
+
 import Header from "../components/Basic/Header";
 import AllRoomsContainer from "../components/allRoomsContainer";
-import {logoutStart} from "../redux/actions/user";
 import Chat from "../components/chat";
 
 const Container = styled.div`

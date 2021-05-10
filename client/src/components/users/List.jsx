@@ -13,7 +13,6 @@ const Container = styled.div`
 
 const List = (props) => (
     <Container>
-        {console.log('==========>props', props)}
         {props.users.map((user, index) => (
             <Item
                 creator={props.creator === user._id}

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useRef} from 'react'
 import styled, {css} from 'styled-components';
 
 const InputInnerWrap = styled.div`
@@ -47,25 +47,34 @@ const Icon = styled.i`
   line-height: 36px
 `
 
-const Input = ({icon, handleChange, handleClick, value}) => (
-    <Wrap>
-        <InputInnerWrap>
-            {value !== undefined
-                ? <InputValue borderFull={!icon} onChange={handleChange} value={value}/>
-                : <InputValue borderFull={!icon} onChange={handleChange}/>
-            }
-            {icon && (
-                <Button>
-                    <Icon
-                        className="material-icons"
-                        onClick={handleClick}
-                    >
-                        {icon}
-                    </Icon>
-                </Button>
-            )}
-        </InputInnerWrap>
-    </Wrap>
-)
+const Input = ({icon, handleChange, handleClick, value, onKeyPress}) => {
+    const inputRef = useRef()
+
+    const send = () => {
+        handleClick()
+        inputRef.current.focus()
+    }
+
+    return (
+        <Wrap onKeyPress={onKeyPress}>
+            <InputInnerWrap>
+                {value !== undefined
+                    ? <InputValue borderFull={!icon} onChange={handleChange} value={value} ref={inputRef}/>
+                    : <InputValue borderFull={!icon} onChange={handleChange} ref={inputRef}/>
+                }
+                {icon && (
+                    <Button>
+                        <Icon
+                            className="material-icons"
+                            onClick={send}
+                        >
+                            {icon}
+                        </Icon>
+                    </Button>
+                )}
+            </InputInnerWrap>
+        </Wrap>
+    )
+}
 
 export default Input

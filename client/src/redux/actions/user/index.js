@@ -17,9 +17,8 @@ export const loginSuccess = (payload) => ({
     payload
 })
 
-export const loginError = (error) => ({
+export const loginError = () => ({
     type: LOGIN_ERROR,
-    error
 })
 
 export const logoutStart = (userId) => ({
@@ -31,7 +30,6 @@ export const logoutSuccess = () => ({
     type: LOGOUT_SUCCESS,
 })
 
-export const logoutError = (error) => ({
+export const logoutError = () => ({
     type: LOGOUT_ERROR,
-    error
 })

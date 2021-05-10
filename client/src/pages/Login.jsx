@@ -3,8 +3,9 @@ import styled from "styled-components";
 import {connect} from "react-redux";
 
 import {loginStart} from "../redux/actions/user";
-import Input from "../components/Basic/Input";
 import {socket} from "../socket";
+
+import Input from "../components/Basic/Input";
 
 
 const Container = styled.div`
@@ -63,10 +64,10 @@ const Login = (props) => {
                 handleChange={handleChangeName}
             />
             <Title>Введите пароль</Title>
-            <Input
-                handleChange={handleChangePassword}
-            />
-            <Confirm onClick={handleConfirm}>
+            <Input handleChange={handleChangePassword}/>
+            <Confirm
+                onClick={handleConfirm}
+            >
                 Войти
             </Confirm>
         </Container>

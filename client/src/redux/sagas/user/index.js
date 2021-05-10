@@ -1,6 +1,6 @@
 import {call, put, takeLatest} from 'redux-saga/effects'
 
-import {LOGIN_START, LOGOUT_START} from "../../action-types";
+import {CHAT, LOGIN, LOGIN_START, LOGOUT_START, PICKUP} from "../../action-types";
 import {loginError, loginSuccess, logoutError, logoutSuccess} from "../../actions/user";
 import {login, logout} from "../../../api/auth";
 import {setStep} from "../../actions/ui";
@@ -23,7 +23,7 @@ function* loginSaga({data}) {
         }))
         socket.connect()
         Toast(response.data.message)
-        yield put(setStep(window.isMobileVersion ? "PICKUP" : "CHAT"))
+        yield put(setStep(window.isMobileVersion ? PICKUP : CHAT))
     } catch (e) {
         Toast(e?.response?.data?.message)
         yield put(loginError())
@@ -35,11 +35,10 @@ function* logoutSaga(payload) {
         const response = yield call(logout, {userId: payload.userId})
         yield put(logoutSuccess())
         socket.disconnect()
-        // socket.emit('disconnect', payload.userId)
         Toast(response.data.message)
-        yield put(setStep("LOGIN"))
+        yield put(setStep(LOGIN))
     } catch (e) {
         Toast(e?.response?.data?.message)
-        yield put(logoutError(e))
+        yield put(logoutError())
     }
 }

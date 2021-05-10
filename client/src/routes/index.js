@@ -25,7 +25,6 @@ function useRoutes() {
             ) : (
                 <Route exact path="/chat">
                     <AllRooms history={history}/>
-                    {/*<Chat history={history}/>*/}
                 </Route>
             )}
             <Redirect to="/login"/>

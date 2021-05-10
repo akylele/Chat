@@ -8,6 +8,7 @@ const Container = styled.div`
   flex-direction: column;
   height: 100%;
   overflow-y: scroll;
+  overflow-x: hidden;
 `;
 
 const List = ({filteredRooms, rooms, activeRoom, handleChangeActive, handleRemove, userId}) => {

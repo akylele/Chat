@@ -2,8 +2,7 @@ import React from 'react'
 import styled from 'styled-components';
 import {connect} from "react-redux";
 
-import List from "./List";
-import Header from "./Header";
+import {socket} from '../../socket';
 import {
     createRoomStart,
     deleteRoomStart,
@@ -11,9 +10,11 @@ import {
     setActiveRoom,
     setFilteredRooms
 } from "../../redux/actions/rooms";
+
+import List from "./List";
+import Header from "./Header";
 import Input from "../Basic/Input";
 import Row from "../Basic/Row";
-import {socket} from '../../socket';
 
 const Container = styled.div`
   min-width: 300px;

@@ -62,6 +62,7 @@ function* deleteRoomSaga(payload) {
         yield put(deleteRoomSuccess())
         Toast(response.data.message)
         socket.emit('ROOM:DELETE', {roomId: payload.id})
+
         if(activeRoomId === payload.id){
             yield put(setActiveRoom(null))
         }

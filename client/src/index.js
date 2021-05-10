@@ -1,15 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import {Provider} from "react-redux";
+import {BrowserRouter as Router} from 'react-router-dom';
+import { createBrowserHistory } from "history";
+
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {configureStore} from './redux/store'
 import { configureApi } from './api/index'
-import {Provider} from "react-redux";
-import {BrowserRouter as Router} from 'react-router-dom';
-import { createBrowserHistory } from "history";
-const history = createBrowserHistory();
 
+import './index.css';
+
+const history = createBrowserHistory();
 const store = configureStore();
 export const api = configureApi(store)
 

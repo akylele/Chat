@@ -1,7 +1,7 @@
 import React from 'react'
 import styled, {css} from 'styled-components';
 
-import {getTime} from "../../utils/dateFormatter";
+import {getTimeShort} from "../../utils/dateFormatter";
 
 const Block = styled.div`
   width: 100%;
@@ -32,10 +32,11 @@ const Icon = styled.i`
   }
 `;
 
-const Title = styled.div`
+const Title = styled.span`
   text-overflow: ellipsis;
   white-space: nowrap;
-  overflow: hidden
+  overflow: hidden;
+  font-weight: bold;
 `;
 
 const Message = styled.div`
@@ -59,16 +60,22 @@ const Date = styled.div`
   white-space: nowrap;
 `;
 
+const Row = styled.div`
+  height: 50%;
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+`
+
 const Col = styled.div`;
   display: flex;
-  width: 60rem;
+  width: 100%;
   flex-direction: column;
   justify-content: space-around;
-  padding: 2px 5px;
-  //overflow: hidden;
+  padding: 0 5px;
 
   ${props => props.width && css`
-    width: ${props.width}rem;
+    width: ${props.width}%;
   `}
 
   ${props => props.end && css`
@@ -78,9 +85,22 @@ const Col = styled.div`;
 
 const Item = ({active, handleChangeActive, room, handleRemove, userId}) => (
     <Block
-        active={window.isMobileVersion ? false : active }
+        active={window.isMobileVersion ? false : active}
     >
-        {room.creator === userId && <Col width={20}>
+
+        <Col width={room.creator === userId ? 80 : 100}
+             onClick={() => handleChangeActive(room._id)}
+        >
+            <Row>
+                <Title>{room.title}</Title>
+                {room.dateOfLastMessage && <Date>{getTimeShort(room.dateOfLastMessage)}</Date>}
+            </Row>
+            <Row>
+                <Message>{room.lastMessage}</Message>
+            </Row>
+        </Col>
+        {room.creator === userId &&
+        <Col width={20}>
             <Icon
                 className="material-icons"
                 onClick={() => handleRemove(room._id)}
@@ -88,19 +108,6 @@ const Item = ({active, handleChangeActive, room, handleRemove, userId}) => (
                 delete
             </Icon>
         </Col>}
-        <div
-            onClick={() => handleChangeActive(room._id)}
-        >
-            <Col width={55}>
-                <Title>{room.title}</Title>
-                <Message>{room.lastMessage}</Message>
-            </Col>
-            <Col end width={25}>
-                {room.dateOfLastMessage && <Date>{getTime(room.dateOfLastMessage)}</Date>}
-                {room.counter && <Quantity>{room.counter}</Quantity>}
-            </Col>
-        </div>
-
     </Block>
 )
 

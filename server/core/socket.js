@@ -16,29 +16,37 @@ export default (http) => {
         socket.on('ROOM:JOIN', async ({roomId, user: userData}) => {
             socket.join(roomId);
             const candidate = await Room.findOne({_id: roomId})
+
             if (candidate) {
-                const newUsers = candidate.users.concat({
-                    ...userData,
-                    name: userData.username,
-                    status: 'online',
-                    _id: userData.userId
-                })
                 try {
+                    const newUsers = candidate.users.concat({
+                        ...userData,
+                        name: userData.username,
+                        status: 'online',
+                        _id: userData.userId
+                    })
+
+                    const newMessages = candidate.messages.concat({
+                        from: 'service',
+                        text: `${userData.username} вошел`,
+                        date: new Date(Date.now()).toISOString()
+                    })
                     await Room.updateOne({_id: roomId}, {
                         $set:
                             {
+                                messages: newMessages,
                                 users: newUsers
                             }
                     })
-
+                    io.sockets.to(roomId).emit('ROOM:UPDATE_MESSAGES', {messages: newMessages, roomId});
                     io.sockets.to(roomId).emit('ROOM:UPDATE_USERS', {users: newUsers, roomId});
+
+                    const creator = candidate.creator === userData.userId
+
+                    if (creator) {
+                        socket.to(roomId).emit('ROOM:JOIN_CREATOR', `В эту комнату подключился ее создатель - ${userData.username}`);
+                    }
                 } catch (e) {
-
-                }
-
-                const creator = candidate.creator === userData.userId
-                if (creator) {
-                    socket.to(roomId).emit('ROOM:JOIN_CREATOR', `В эту комнату подключился ее создатель - ${userData.username}`);
                 }
             }
         });
@@ -50,34 +58,48 @@ export default (http) => {
         socket.on('ROOM:EXIT', async ({userName, roomId}) => {
             const candidate = await Room.findOne({_id: roomId})
             if (candidate) {
-                const newUsers = candidate.users.filter(user => user.name !== userName)
-                await Room.findOneAndUpdate({_id: roomId}, {
-                    $set:
-                        {
-                            users: newUsers
-                        }
-                })
-                socket.to(roomId).emit('ROOM:UPDATE_USERS', {users: newUsers, roomId});
-                socket.leave(roomId);
+                try {
+                    const newMessages = candidate.messages.concat({
+                        from: 'service',
+                        text: `${userName} вышел`,
+                        date: new Date(Date.now()).toISOString()
+                    })
+                    const newUsers = candidate.users.filter(user => user.name !== userName)
+                    await Room.findOneAndUpdate({_id: roomId}, {
+                        $set:
+                            {
+                                messages: newMessages,
+                                users: newUsers
+                            }
+                    })
+                    io.sockets.to(roomId).emit('ROOM:UPDATE_MESSAGES', {messages: newMessages, roomId});
+                    socket.to(roomId).emit('ROOM:UPDATE_USERS', {users: newUsers, roomId});
+                    socket.leave(roomId);
+                } catch (e) {
+                }
             }
         });
 
         socket.on('ROOM:NEW_MESSAGE', async ({message, username, roomId}) => {
             const candidate = await Room.findOne({_id: roomId})
             if (candidate) {
+                const dateNow = Date.now()
                 const newMessages = candidate.messages.concat({
                     from: username,
                     text: message,
-                    date: Date.now()
+                    date: dateNow
                 })
                 try {
                     await Room.updateOne({_id: roomId}, {
                         $set:
                             {
+                                dateOfLastMessage: dateNow,
+                                lastMessage: message,
                                 messages: newMessages
                             }
                     })
                     io.sockets.to(roomId).emit('ROOM:UPDATE_MESSAGES', {messages: newMessages, roomId});
+                    io.sockets.emit('ROOM:UPDATE_ROOMS');
                 } catch (e) {
 
                 }

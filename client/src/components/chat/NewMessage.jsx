@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import styled from "styled-components";
+
 import Input from "../Basic/Input";
 
 const Container = styled.div`
@@ -17,27 +18,26 @@ const NewMessage = (props) => {
         setMessage(e.target.value)
     }
 
-    function handleMessage() {
+    const handleMessage = () => {
         if (message.length) {
             setMessage('')
             props.sendMessage(message)
         }
     }
 
-    // const handleKeyPress = (event) => {
-    //     if (event.keyCode === 13 && message.length) {
-    //         setMessage('')
-    //         props.sendMessage(message)
-    //     }
-    // }
+    const handleKeyPress = e => {
+        if (e.key === 'Enter') {
+            handleMessage()
+        }
+    }
 
     return (
         <Container>
             <Input
+                onKeyPress={handleKeyPress}
                 value={message}
                 icon={'send'}
                 handleClick={handleMessage}
-                // onKeyPress={handleKeyPress}
                 handleChange={(e) => inputChangeValue(e)}
             />
         </Container>

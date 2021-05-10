@@ -60,9 +60,8 @@ export const loadRoomByIdSuccess = (payload) => ({
     payload
 })
 
-export const loadRoomByIdError = (error) => ({
+export const loadRoomByIdError = () => ({
     type: LOAD_ROOM_BY_ID_ERROR,
-    error
 })
 
 export const createRoomStart = (data) => ({

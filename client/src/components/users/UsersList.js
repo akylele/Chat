@@ -17,12 +17,13 @@ const Container = styled.div`
 
 
 const UsersList = (props) => {
+    const {users, creator} = props.currentRoom
     return (
         <Container>
             <Row>
-                <Header length={props.currentRoom.users.length}/>
+                <Header length={users.length}/>
             </Row>
-            <List users={props.currentRoom.users} creator={props.currentRoom.creator}/>
+            <List users={users} creator={creator}/>
         </Container>
     );
 }

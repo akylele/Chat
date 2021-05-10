@@ -1,13 +1,17 @@
-import './App.css';
-import useRoutes from '../src/routes'
 import {useEffect} from "react";
 import {connect} from "react-redux";
 import {useHistory} from "react-router-dom";
-import Loader from "./components/Basic/Loader";
+
 import {socket} from './socket';
 import {loadRoomsStart, newMessagesForRoom, newUsersForRoom, setActiveRoom} from "./redux/actions/rooms";
 import {Toast} from "./hooks/message.hook";
 import {setStep} from "./redux/actions/ui";
+
+import useRoutes from '../src/routes'
+import Loader from "./components/Basic/Loader";
+
+import './App.css';
+import {CHAT, LOGIN, PICKUP} from "./redux/action-types";
 
 function App(props) {
     const history = useHistory()
@@ -16,7 +20,7 @@ function App(props) {
 
     socket.off('ROOM:DELETE_ROOM').on('ROOM:DELETE_ROOM', data => {
         Toast(data.message)
-        props.setStep(window.isMobileVersion ? 'PICKUP' : 'CHAT')
+        props.setStep(window.isMobileVersion ? PICKUP : CHAT)
         props.setActiveRoom(null)
         props.loadRoomsStart()
     })
@@ -31,16 +35,21 @@ function App(props) {
         props.newMessagesForRoom(data)
     })
 
+    socket.off('ROOM:UPDATE_ROOMS').on('ROOM:UPDATE_ROOMS', () => {
+        console.log('==========>обновляем комнаты')
+        props.loadRoomsStart()
+    })
+
     socket.off('ROOM:JOIN_CREATOR').on('ROOM:JOIN_CREATOR', (text) => {
         Toast(text)
     })
 
     useEffect(() => {
-        if (props.step === 'PICKUP') {
+        if (props.step === PICKUP) {
             return history.push('/pickup')
-        } else if (props.step === 'LOGIN') {
+        } else if (props.step === LOGIN) {
             return history.push('/login')
-        } else if (props.step === 'CHAT') {
+        } else if (props.step === CHAT) {
             return history.push('/chat')
         }
     }, [props.step])
@@ -57,8 +66,6 @@ function App(props) {
 
 const mapStateToProps = (state) => ({
     step: state.ui.step,
-    activeRoom: state.rooms.activeRoom,
-    userId: state.user.userId,
 })
 
 const mapDispatchToProps = dispatch => ({

@@ -2,15 +2,18 @@ import React, {useEffect, useState} from 'react';
 import styled from "styled-components";
 import {connect} from "react-redux";
 
-import NewMessage from "./NewMessage";
-import Messages from "./Messages";
-import UsersList from "../users";
 import {setActiveRoom} from "../../redux/actions/rooms";
 import {socket} from "../../socket";
 
+import NewMessage from "./NewMessage";
+import Messages from "./Messages";
+import UsersList from "../users/UsersList";
+import UsersListMobile from "../users/UsersListMobile";
+import HeaderChat from "./Header";
+
 const Container = styled.div`
   width: 100%;
-  padding: 10px 20px;
+  padding: 25px 20px 10px 20px;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -24,7 +27,7 @@ const Container = styled.div`
 `;
 
 const NotifyBlock = styled.div`
-  font-size: 32px;
+  font-size: 26px;
   font-weight: bold;
   position: absolute;
   top: 50%;
@@ -35,20 +38,6 @@ const NotifyBlock = styled.div`
     width: 100%;
     text-align: center;
   }
-`
-
-const Details = styled.details`
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1000;
-  width: 100%;
-  box-shadow: 0 0 10px 1px grey;
-  background-color: white;
-`
-
-const Summary = styled.summary`
-
 `
 
 const Title = styled.h5`
@@ -95,46 +84,29 @@ const Chat = (props) => {
             </Container>
         )
     }
-    if (currentRoom.messages.length < 1) {
-        return (
-            <>
-                {window.isMobileVersion &&
-                <Title>{currentRoom.title}</Title>}
-                <Container>
-                    {window.isMobileVersion &&
-                    <Details>
-                        <Summary>Пользователи</Summary>
-                        <ul>
-                            {currentRoom.users.map(user => (
-                                <li>{user.name}</li>
-                            ))}
-                        </ul>
-                    </Details>}
-                    <NotifyBlock>сообщений нет</NotifyBlock>
-                    <NewMessage sendMessage={sendMessage}/>
-                </Container>
-                {!window.isMobileVersion && <UsersList currentRoom={currentRoom}/>}
-            </>
-        )
+
+    const renderMessages = () => {
+        if (currentRoom.messages.length === 0) {
+            return <NotifyBlock>сообщений нет</NotifyBlock>
+        }
+
+        return <Messages messages={currentRoom.messages} username={props.username}/>
+    }
+
+    const handleBack = () => {
+        const prevActiveRoom = props.activeRoom
+        socket.emit('ROOM:EXIT', {userName: props.username, roomId: prevActiveRoom})
+
+        props.setActiveRoom(null)
+        props.history.push('/pickup')
     }
 
     return (
         <>
-            {window.isMobileVersion &&
-            <Title>{currentRoom.title}</Title>}
+            {window.isMobileVersion && <HeaderChat currentRoom={currentRoom} handleBack={handleBack}/>}
             <Container>
-                {window.isMobileVersion &&
-                <Details>
-                    <Summary>Пользователи</Summary>
-                    <ul>
-                        {currentRoom.users.map(user => (
-                            <li>{user.name}</li>
-                        ))}
-                    </ul>
-                </Details>}
-                {!currentRoom.messages ?
-                    <NotifyBlock>сообщений нет</NotifyBlock> :
-                    <Messages messages={currentRoom.messages} username={props.username}/>}
+                {window.isMobileVersion && <UsersListMobile currentRoom={currentRoom}/>}
+                {renderMessages()}
                 <NewMessage sendMessage={sendMessage}/>
             </Container>
             {!window.isMobileVersion && <UsersList currentRoom={currentRoom}/>}
