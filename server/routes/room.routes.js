@@ -55,19 +55,6 @@ router.get(
         }
     })
 
-router.get(
-    '/:id',
-    async (req, res) => {
-        try {
-            const id = req.params.id
-            const room = await Room.find({_id: id})
-
-            return res.status(200).json(room)
-        } catch (e) {
-            return res.status(500).json({message: 'ошибка получения'})
-        }
-    })
-
 router.delete(
     '/:id',
     async (req, res) => {

@@ -7,7 +7,7 @@ import { createBrowserHistory } from "history";
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {configureStore} from './redux/store'
-import { configureApi } from './api/index'
+import { configureApi } from './api'
 
 import './index.css';
 
