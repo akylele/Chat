@@ -51,6 +51,7 @@ const Input = ({icon, handleChange, handleClick, value, onKeyPress}) => {
     const inputRef = useRef()
 
     const send = () => {
+        if(!handleClick) return
         handleClick()
         inputRef.current.focus()
     }

@@ -75,7 +75,7 @@ const Messages = ({messages, username}) => {
                             key={index}
                             id={index === messages.length - 1 ? "last-message" : ''}
                         >
-                            {message.text}{' '}{getTimeShort(message.date)}
+                            {message.text}{' '}{getTime(message.date)}
                         </ServiceMessage>
                     )
                 } else {

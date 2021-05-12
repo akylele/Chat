@@ -1,11 +1,12 @@
 import socket from 'socket.io'
 
 import Room from "../models/Room";
+import {BASE_URL_CLIENT} from "../../client/src/constants/api";
 
 export default (http) => {
     const io = socket(http, {
         cors: {
-            origin: "http://localhost:3000",
+            origin: BASE_URL_CLIENT,
             credentials: true
         }
     });

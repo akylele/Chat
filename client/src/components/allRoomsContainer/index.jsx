@@ -41,7 +41,7 @@ const AllRoomsContainer = (props) => {
 
     const handleSearch = (e) => {
         if (e.target.value) {
-            return props.setFilteredRooms(props.rooms.filter(elem => elem.title.includes(e.target.value)))
+            return props.setFilteredRooms(props.rooms.filter(elem => elem.title.toLowerCase().includes((e.target.value).toLowerCase())))
         }
 
         return props.setFilteredRooms(null)

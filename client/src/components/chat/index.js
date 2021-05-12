@@ -80,7 +80,7 @@ const Chat = (props) => {
     if (props.activeRoom === null) {
         return (
             <Container>
-                <NotifyBlock>выберите чат</NotifyBlock>
+                <NotifyBlock>выберите комнату</NotifyBlock>
             </Container>
         )
     }

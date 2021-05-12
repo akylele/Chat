@@ -1,9 +1,6 @@
 import React from 'react'
 import styled from 'styled-components';
 
-import Item from "./Item";
-
-
 const Details = styled.details`
   position: absolute;
   top: 0;
@@ -16,7 +13,7 @@ const Details = styled.details`
 `
 
 const Summary = styled.summary`
-
+  outline: none;
 `
 
 const Ul = styled.ul`

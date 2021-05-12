@@ -9,14 +9,15 @@ import Input from "../components/Basic/Input";
 
 
 const Container = styled.div`
-  width: 100vw;
+  width: 100%;
+  max-width: 500px;
   height: 100vh;
   padding: 0 15px;
-  background-color: rgb(245, 245, 245);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin: 0 auto;
 `;
 
 const Title = styled.h2`
@@ -24,16 +25,18 @@ const Title = styled.h2`
   text-align: center;
 `;
 
-const Confirm = styled.button`
+const Confirm = styled.div`
   border: none;
   margin: 20px auto;
   background: white;
   padding: 5px 15px;
-  height: 26px;
+  height: 36px;
+  line-height: 26px;
   border-radius: 15px;
   outline: none;
   color: black;
   position: relative;
+  box-shadow: 0 0 10px 1px #e4e2e2;
 `;
 
 const Login = (props) => {

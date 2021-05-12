@@ -1,9 +1,9 @@
 import axios from 'axios'
-import {BASE_URL} from '../constants/api'
+import {BASE_URL_SERVER} from '../constants/api'
 
 export const configureApi = () => {
     const instance = axios.create({
-        baseURL: BASE_URL + '/api',
+        baseURL: BASE_URL_SERVER + '/api',
     })
 
     instance.interceptors.request.use(
