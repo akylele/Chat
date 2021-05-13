@@ -1,12 +1,13 @@
 import React from 'react'
 import {Redirect, Route, Switch, useHistory} from 'react-router-dom'
+import {History} from 'history'
 
 import Login from "../pages/Login";
 import AllRooms from "../pages/AllRooms";
 import Chat from "../components/chat";
 
 function useRoutes() {
-    const history = useHistory<any>();
+    const history = useHistory<History>();
 
     return (
         <Switch>

@@ -15,7 +15,7 @@ import List from "./List";
 import Header from "./Header";
 import Input from "../Basic/Input";
 import Row from "../Basic/Row";
-import {AllRoomsContainerComponentDispatch, AllRoomsContainerComponent, AllRoomsContainerComponentStore} from "./types";
+import {AllRoomsContainerComponent, AllRoomsContainerComponentDispatch, AllRoomsContainerComponentStore} from "./types";
 import {IRoom} from '../../redux/actions/types';
 
 const Container = styled.div`
@@ -62,8 +62,7 @@ const AllRoomsContainer = ({
 
     const handleChangeActive = async (id: string) => {
         if (id !== activeRoom) {
-            const prevActiveRoom = activeRoom
-            socket.emit('ROOM:EXIT', {userName: user.username, roomId: prevActiveRoom})
+            socket.emit('ROOM:EXIT', {userName: user.username, roomId: activeRoom})
 
             setActiveRoom(id)
             if (window.isMobileVersion) history.push('/chat')
@@ -108,7 +107,7 @@ const mapStateToProps = (state: AllRoomsContainerComponentStore) => ({
     activeRoom: state.rooms.activeRoom
 })
 
-const mapDispatchToProps = (dispatch: (arg0: AllRoomsContainerComponentDispatch) => any) => ({
+const mapDispatchToProps = (dispatch: (arg0: AllRoomsContainerComponentDispatch) => void) => ({
     setFilteredRooms: (filteredRooms: IRoom[] | null | []) => dispatch(setFilteredRooms(filteredRooms)),
     setActiveRoom: (room: string | null) => dispatch(setActiveRoom(room)),
     createRoom: (data: { userId: string, title: string }) => dispatch(createRoomStart(data)),

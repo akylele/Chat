@@ -1,13 +1,15 @@
+import { History } from 'history'
+
 import {ILoginData} from "../api/types";
 import {IUserStore} from "../redux/actions/types";
 
 export interface IAllRooms {
     logout: (arg0: string) => void;
     user: IUserStore
-    history: any;
+    history: History;
 }
 
 export interface ILoginComponent {
-    history: any,
+    history: History,
     loginStart: (arg0: ILoginData) => void
 }

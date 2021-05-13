@@ -1,4 +1,4 @@
-import React, {useRef} from 'react'
+import React, {KeyboardEvent, useRef} from 'react'
 import styled, {css} from 'styled-components';
 
 import {IInputComponent, IInputValue} from './types'
@@ -11,7 +11,7 @@ const InputInnerWrap = styled.div`
   border-radius: 15px !important;
 `;
 
-const Wrap = styled.div<{onKeyPress: any}>`
+const Wrap = styled.div<{onKeyPress: React.KeyboardEventHandler<HTMLDivElement> & ((e: KeyboardEvent<HTMLInputElement>) => void) | undefined}>`
   width: 100% !important;
   top: 50% !important;
 `;
@@ -53,7 +53,9 @@ const Input = ({icon, handleChange, handleClick, value, onKeyPress}: IInputCompo
     const inputRef = useRef<any>()
 
     const send = () => {
-        handleClick()
+        if (handleClick) {
+            handleClick()
+        }
         inputRef.current.focus()
     }
 

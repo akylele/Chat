@@ -1,3 +1,5 @@
+import {History} from 'history'
+
 import {IRoom} from "../../redux/actions/types";
 
 export interface IHeaderChatComponent {
@@ -25,5 +27,5 @@ export interface IChatComponent {
     rooms: IRoom[]
     setActiveRoom: (arg0: null | string) => void
     username: string
-    history?: any
+    history: History
 }

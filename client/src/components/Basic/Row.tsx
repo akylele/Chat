@@ -2,7 +2,7 @@ import React from 'react'
 import styled, {css} from 'styled-components';
 import {IRowComponent} from "./types";
 
-const RowContainer = styled.div<{position: string}>`
+const RowContainer = styled.div<{position?: string}>`
   display: flex;
   flex-direction: row;
   align-items: center;

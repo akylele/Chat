@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import styled from "styled-components";
 
 import Input from "../Basic/Input";
@@ -25,7 +25,7 @@ const NewMessage = (props: { sendMessage: (arg0: string) => void; }) => {
         }
     }
 
-    const handleKeyPress = (e: KeyboardEvent) => {
+    const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             handleMessage()
         }

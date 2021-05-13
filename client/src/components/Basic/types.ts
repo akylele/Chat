@@ -3,10 +3,10 @@ import {IUserStore} from "../../redux/actions/types";
 
 export interface IInputComponent {
     icon?: string,
-    handleChange?: (e: ChangeEvent<HTMLInputElement>) => void,
-    handleClick?: React.MouseEventHandler<HTMLButtonElement> | any,
+    handleChange: (e: ChangeEvent<HTMLInputElement>) => void,
+    handleClick?: () => void,
     value?: string,
-    onKeyPress?: KeyboardEvent<HTMLInputElement>
+    onKeyPress?: (e: KeyboardEvent<HTMLInputElement>) => void | undefined
 }
 
 export interface ICircleButtonComponent {
@@ -25,7 +25,7 @@ export interface IRowComponent {
 
 export interface IInputValue {
     borderFull: boolean,
-    onChange: any,
+    onChange: (e: ChangeEvent<HTMLInputElement>) => void,
     value?: string,
     ref: any
 }

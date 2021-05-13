@@ -12,7 +12,7 @@ export interface ActionUser {
 }
 
 export interface ActionRoom {
-    type: any;
+    type: string;
     rooms: IRoom[];
     room: IRoom;
     roomUsers: { roomId: string; users: IUserData[]; };
