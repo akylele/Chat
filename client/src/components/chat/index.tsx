@@ -10,8 +10,8 @@ import Messages from "./Messages";
 import UsersList from "../users/UsersList";
 import UsersListMobile from "../users/UsersListMobile";
 import HeaderChat from "./Header";
-import {Room} from "../../redux/actions/types";
-import {IChatDispatch, IChatProps, IChatStore} from "./types";
+import {IRoom} from "../../redux/actions/types";
+import {IChatDispatch, IChatComponent, IChatStore} from "./types";
 
 const Container = styled.div`
   width: 100%;
@@ -42,7 +42,7 @@ const NotifyBlock = styled.div`
   }
 `
 
-const initialState: Room = {
+const initialState: IRoom = {
     _id: '',
     messages: [],
     users: [],
@@ -52,13 +52,13 @@ const initialState: Room = {
     lastMessage: ''
 }
 
-const Chat = (props: IChatProps) => {
-    const [currentRoom, setCurrentRoom] = useState<Room>(initialState)
+const Chat = (props: IChatComponent) => {
+    const [currentRoom, setCurrentRoom] = useState<IRoom>(initialState)
 
     useEffect(() => {
         if (props.activeRoom !== null && props.rooms.length > 0) {
-            if (props.rooms.filter((room: Room) => room._id === props.activeRoom).length > 0) {
-                setCurrentRoom(props.rooms.filter((room: Room) => room._id === props.activeRoom)[0])
+            if (props.rooms.filter((room: IRoom) => room._id === props.activeRoom).length > 0) {
+                setCurrentRoom(props.rooms.filter((room: IRoom) => room._id === props.activeRoom)[0])
             } else {
                 setCurrentRoom(initialState)
                 props.setActiveRoom(null)
@@ -119,7 +119,7 @@ const mapStateToProps = (state: IChatStore) => ({
 })
 
 const mapDispatchToProps = (dispatch: (arg0: IChatDispatch) => void) => ({
-    setActiveRoom: (room: string) => dispatch(setActiveRoom(room)),
+    setActiveRoom: (room: string | null) => dispatch(setActiveRoom(room)),
 })
 
 

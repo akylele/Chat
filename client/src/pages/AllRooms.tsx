@@ -8,7 +8,7 @@ import Header from "../components/Basic/Header";
 import AllRoomsContainer from "../components/allRoomsContainer";
 import Chat from "../components/chat";
 import {IAllRooms} from "./types";
-import {UserStore} from "../redux/actions/types";
+import {IUserStore} from "../redux/actions/types";
 
 const Container = styled.div`
   display: flex;
@@ -37,7 +37,7 @@ const AllRooms = (props: IAllRooms) => {
 }
 
 
-const mapStateToProps = (state: { user: UserStore }) => ({
+const mapStateToProps = (state: { user: IUserStore }) => ({
     user: state.user
 })
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components';
 
-import {UserStore} from "../../redux/actions/types";
+import {IUserData, IUserStore} from "../../redux/actions/types";
 
 const Block = styled.div`
   width: 100%;
@@ -14,7 +14,7 @@ const Block = styled.div`
   text-overflow: ellipsis;
 `;
 
-const Item = ({user, creator}: {user: UserStore, creator: boolean}) => (
+const Item = ({user, creator}: {user: IUserData, creator: boolean}) => (
     <Block>
             <span>{user.name}{creator && ' - создатель'}</span>
     </Block>

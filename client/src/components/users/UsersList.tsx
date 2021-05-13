@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Header from "./Header";
 import List from "./List";
 import Row from "../Basic/Row";
-import {User, UserStore} from "../../redux/actions/types";
+import {IRoom, IUserData, IUserStore} from "../../redux/actions/types";
 
 const Container = styled.div`
   width: 40%;
@@ -17,7 +17,7 @@ const Container = styled.div`
 `;
 
 
-const UsersList = (props: { currentRoom: { users: UserStore[]; creator: string; } }) => {
+const UsersList = (props: { currentRoom: IRoom }) => {
     const {users, creator} = props.currentRoom
     return (
         <Container>

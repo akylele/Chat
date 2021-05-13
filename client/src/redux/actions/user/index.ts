@@ -1,12 +1,12 @@
 import {LOGIN_ERROR, LOGIN_START, LOGIN_SUCCESS, LOGOUT_ERROR, LOGOUT_START, LOGOUT_SUCCESS,} from "../../action-types";
-import {Login, UserLogin} from "../../../api/types";
+import {ILoginData, UserLoginData} from "../../../api/types";
 
-export const loginStart = (payload: Login) => ({
+export const loginStart = (payload: ILoginData) => ({
     type: LOGIN_START,
     payload
 })
 
-export const loginSuccess = (loginData: UserLogin) => ({
+export const loginSuccess = (loginData: UserLoginData) => ({
     type: LOGIN_SUCCESS,
     loginData
 })

@@ -1,20 +1,20 @@
-export type Logout = {
+export type ILogoutData = {
     userId: string,
 }
 
-export type Login = {
+export type ILoginData = {
     username: string,
     password: string,
     socketId: string
 }
 
-export type UserLogin = {
+export type UserLoginData = {
     username: string,
     userId: string,
     socketId: string
 }
 
-export type CreateRoom = {
+export type CreateRoomData = {
     title: string
     userId: string
 }

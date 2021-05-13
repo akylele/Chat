@@ -1,12 +1,12 @@
 import {api} from '../'
-import {CreateRoom} from "./types";
+import {CreateRoomData} from "./types";
 
 export const getAllRooms = () => {
     return api
         .get('/room/getAll')
 }
 
-export const createRoom = ({title, userId}: CreateRoom) => {
+export const createRoom = ({title, userId}: CreateRoomData) => {
     return api
         .post('/room/create', {title, userId})
 }

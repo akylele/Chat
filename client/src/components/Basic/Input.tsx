@@ -1,7 +1,7 @@
-import React, {MutableRefObject, useRef} from 'react'
+import React, {useRef} from 'react'
 import styled, {css} from 'styled-components';
 
-import {Input} from './types'
+import {IInputComponent, IInputValue} from './types'
 
 const InputInnerWrap = styled.div`
   width: 100% !important;
@@ -11,12 +11,12 @@ const InputInnerWrap = styled.div`
   border-radius: 15px !important;
 `;
 
-const Wrap = styled.div`
+const Wrap = styled.div<{onKeyPress: any}>`
   width: 100% !important;
   top: 50% !important;
 `;
 
-const InputValue = styled.input<{borderFull: boolean}>`
+const InputValue = styled.input<IInputValue>`
   width: 100% !important;
   border: none !important;
   background: white !important;
@@ -49,8 +49,8 @@ const Icon = styled.i`
   line-height: 36px
 `
 
-const Input = ({icon, handleChange, handleClick, value, onKeyPress}: Input) => {
-    const inputRef = useRef<MutableRefObject>()
+const Input = ({icon, handleChange, handleClick, value, onKeyPress}: IInputComponent) => {
+    const inputRef = useRef<any>()
 
     const send = () => {
         handleClick()

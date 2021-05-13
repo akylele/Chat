@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from "styled-components";
-import {IHeaderChat} from "./types";
+import {IHeaderChatComponent} from "./types";
 
 const Icon = styled.i`
   position: absolute;
@@ -24,7 +24,7 @@ const Title = styled.h5`
   line-height: 50px;
 `
 
-const HeaderChat = ({currentRoom, handleBack}: IHeaderChat) => (
+const HeaderChat = ({currentRoom, handleBack}: IHeaderChatComponent) => (
     <Row>
         <Icon
             className="material-icons"

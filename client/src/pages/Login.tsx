@@ -6,7 +6,8 @@ import {loginStart} from "../redux/actions/user";
 import {socket} from "../socket";
 
 import Input from "../components/Basic/Input";
-import { Login } from '../api/types';
+import { ILoginData } from '../api/types';
+import {ILoginComponent} from "./types";
 
 
 const Container = styled.div`
@@ -37,7 +38,7 @@ const Confirm = styled.button`
   position: relative;
 `;
 
-const Login = (props: { loginStart: (arg0: { username: string; password: string; socketId: string; }) => void; }) => {
+const Login = (props: ILoginComponent) => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [socketId, setSocketId] = useState('')
@@ -75,8 +76,8 @@ const Login = (props: { loginStart: (arg0: { username: string; password: string;
     )
 }
 
-const mapDispatchToProps = (dispatch: (arg0: { type: string; payload: Login; }) => void) => ({
-    loginStart: (data: Login) => dispatch(loginStart(data))
+const mapDispatchToProps = (dispatch: (arg0: { type: string; payload: ILoginData; }) => void) => ({
+    loginStart: (data: ILoginData) => dispatch(loginStart(data))
 })
 
 export default connect(null, mapDispatchToProps)(Login)

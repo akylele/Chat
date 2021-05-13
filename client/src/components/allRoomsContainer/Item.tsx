@@ -2,8 +2,9 @@ import React from 'react'
 import styled, {css} from 'styled-components';
 
 import {getTimeShort} from "../../utils/dateFormatter";
+import {IItemComponent} from "./types";
 
-const Block = styled.div`
+const Block = styled.div<{active: boolean}>`
   width: 100%;
   margin-bottom: 20px;
   padding: 10px;
@@ -45,17 +46,6 @@ const Message = styled.div`
   overflow: hidden
 `;
 
-const Quantity = styled.div`
-  width: 25px;
-  height: 25px;
-  border-radius: 45px;
-  background-color: #44a1f1;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
 const Date = styled.div`
   white-space: nowrap;
 `;
@@ -67,7 +57,7 @@ const Row = styled.div`
   justify-content: space-between;
 `
 
-const Col = styled.div`;
+const Col = styled.div<{width: number}>`;
   display: flex;
   width: 100%;
   flex-direction: column;
@@ -77,13 +67,9 @@ const Col = styled.div`;
   ${props => props.width && css`
     width: ${props.width}%;
   `}
-
-  ${props => props.end && css`
-    align-items: flex-end;
-  `}
 `;
 
-const Item = ({active, handleChangeActive, room, handleRemove, userId}) => (
+const Item = ({active, handleChangeActive, room, handleRemove, userId}: IItemComponent) => (
     <Block
         active={window.isMobileVersion ? false : active}
     >

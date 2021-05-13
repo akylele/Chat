@@ -1,21 +1,21 @@
-export interface Room {
+export interface IRoom {
     _id: string,
-    messages: Message[],
-    users: User[],
+    messages: IMessage[],
+    users: IUserData[],
     title: string,
     creator: string,
     dateOfLastMessage: string,
     lastMessage: string
 }
 
-export interface User {
+export interface IUserData {
     name: string,
     status: string,
     socketId: string
     _id?: string
 }
 
-export interface UserStore {
+export interface IUserStore {
     username: string
     userId: string
     socketId: string
@@ -24,7 +24,7 @@ export interface UserStore {
     _id?: string
 }
 
-export interface Message {
+export interface IMessage {
     from: string,
     text: string,
     date: string

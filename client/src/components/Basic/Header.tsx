@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components';
 
 import CircleButton from "./CircleButton";
+import {IHeaderComponent} from "./types";
 
 const Name = styled.h2`
   font-size: 26px;
@@ -31,7 +32,7 @@ const Wrapper = styled.div`
   margin: 0 20px;
 `;
 
-const Header = (props: { user: { username: string; }; handleLogout: () => void; }) => (
+const Header = (props: IHeaderComponent) => (
     <Container>
         <Title>
             Chat

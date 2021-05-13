@@ -1,5 +1,5 @@
-import {Login} from "../../api/types";
-import {Message, Room, User} from "../actions/types";
+import {ILoginData} from "../../api/types";
+import {IMessage, IRoom, IUserData} from "../actions/types";
 
 export interface ActionUi {
     type: string,
@@ -8,15 +8,15 @@ export interface ActionUi {
 
 export interface ActionUser {
     type: string,
-    loginData: Login,
+    loginData: ILoginData,
 }
 
 export interface ActionRoom {
     type: any;
-    rooms: Room[];
-    room: Room;
-    roomUsers: { roomId: string; users: User[]; };
-    roomMessages: { roomId: string; messages: Message[]; };
+    rooms: IRoom[];
+    room: IRoom;
+    roomUsers: { roomId: string; users: IUserData[]; };
+    roomMessages: { roomId: string; messages: IMessage[]; };
     activeRoom: string;
-    filteredRooms: Room[];
+    filteredRooms: IRoom[];
 }

@@ -2,7 +2,8 @@ import React from 'react'
 import styled from 'styled-components';
 
 import Item from "./Item";
-import {UserStore} from "../../redux/actions/types";
+import {IUserData, IUserStore} from "../../redux/actions/types";
+import {IListComponent} from "./types";
 
 const Container = styled.div`
   display: flex;
@@ -12,9 +13,9 @@ const Container = styled.div`
 `;
 
 
-const List = (props: { users: UserStore[]; creator: string }) => (
+const List = (props: IListComponent) => (
     <Container>
-        {props.users.map((user: UserStore, index: number) => (
+        {props.users.map((user: IUserData, index: number) => (
             <Item
                 creator={props.creator === user._id}
                 user={user}

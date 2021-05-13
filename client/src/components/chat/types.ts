@@ -1,7 +1,7 @@
-import {Room} from "../../redux/actions/types";
+import {IRoom} from "../../redux/actions/types";
 
-export interface IHeaderChat {
-    currentRoom: Room
+export interface IHeaderChatComponent {
+    currentRoom: IRoom
     handleBack: () => void
 }
 
@@ -12,18 +12,18 @@ export interface IChatDispatch {
 
 export interface IChatStore {
     rooms: {
-        rooms: Room[]
-        activeRoom: string
+        rooms: IRoom[]
+        activeRoom: string | null
     }
     user: {
         username: string
     }
 }
 
-export interface IChatProps {
+export interface IChatComponent {
     activeRoom: string | null
-    rooms: Room[]
+    rooms: IRoom[]
     setActiveRoom: (arg0: null | string) => void
     username: string
-    history: any
+    history?: any
 }

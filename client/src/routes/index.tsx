@@ -6,7 +6,7 @@ import AllRooms from "../pages/AllRooms";
 import Chat from "../components/chat";
 
 function useRoutes() {
-    const history = useHistory();
+    const history = useHistory<any>();
 
     return (
         <Switch>

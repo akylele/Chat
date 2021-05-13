@@ -13,14 +13,14 @@ import {
     SET_ACTIVE_ROOM,
     SET_FILTERED_ROOMS
 } from "../../action-types";
-import {Message, Room, User} from "../types";
+import {IMessage, IRoom, IUserData} from "../types";
 
 export const setActiveRoom = (activeRoom: string | null) => ({
     type: SET_ACTIVE_ROOM,
     activeRoom
 })
 
-export const setFilteredRooms = (filteredRooms: Room[]) => ({
+export const setFilteredRooms = (filteredRooms: IRoom[] | null | []) => ({
     type: SET_FILTERED_ROOMS,
     filteredRooms
 })
@@ -29,7 +29,7 @@ export const loadRoomsStart = () => ({
     type: LOAD_ROOMS_START,
 })
 
-export const loadRoomsSuccess = (rooms: Room[]) => ({
+export const loadRoomsSuccess = (rooms: IRoom[]) => ({
     type: LOAD_ROOMS_SUCCESS,
     rooms
 })
@@ -64,12 +64,12 @@ export const createRoomError = () => ({
     type: CREATE_ROOM_ERROR
 })
 
-export const newUsersForRoom = (roomUsers: { users: User[], roomId: string }) => ({
+export const newUsersForRoom = (roomUsers: { users: IUserData[], roomId: string }) => ({
     type: NEW_USERS_FOR_ROOM,
     roomUsers
 })
 
-export const newMessagesForRoom = (roomMessages: { messages: Message[], roomId: string }) => ({
+export const newMessagesForRoom = (roomMessages: { messages: IMessage[], roomId: string }) => ({
     type: NEW_MESSAGES_FOR_ROOM,
     roomMessages
 })

@@ -14,7 +14,7 @@ import {
     SET_FILTERED_ROOMS
 } from "../../action-types";
 
-import {Room} from '../../actions/types'
+import {IRoom} from '../../actions/types'
 import {ActionRoom} from "../types";
 
 const initialState = {
@@ -59,7 +59,7 @@ export default function uiReducer(state = initialState, action: ActionRoom) {
         case NEW_USERS_FOR_ROOM:
             return {
                 ...state,
-                rooms: state.rooms.map((room: Room) => {
+                rooms: state.rooms.map((room: IRoom) => {
                     if (room._id === action.roomUsers.roomId) {
                         room.users = action.roomUsers.users
                     }
@@ -70,7 +70,7 @@ export default function uiReducer(state = initialState, action: ActionRoom) {
         case NEW_MESSAGES_FOR_ROOM:
             return {
                 ...state,
-                rooms: state.rooms.map((room: Room) => {
+                rooms: state.rooms.map((room: IRoom) => {
                     if (room._id === action.roomMessages.roomId) {
                         room.messages = action.roomMessages.messages
                     }

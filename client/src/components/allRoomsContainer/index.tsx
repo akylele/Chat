@@ -15,8 +15,8 @@ import List from "./List";
 import Header from "./Header";
 import Input from "../Basic/Input";
 import Row from "../Basic/Row";
-import {AllRoomsContainerDispatch, AllRoomsContainerProps, AllRoomsContainerStore} from "./types";
-import { Room } from '../../redux/actions/types';
+import {AllRoomsContainerComponentDispatch, AllRoomsContainerComponent, AllRoomsContainerComponentStore} from "./types";
+import {IRoom} from '../../redux/actions/types';
 
 const Container = styled.div`
   min-width: 300px;
@@ -35,37 +35,48 @@ const Container = styled.div`
 `;
 
 
-const AllRoomsContainer = (props: AllRoomsContainerProps) => {
+const AllRoomsContainer = ({
+                               createRoom,
+                               user,
+                               setFilteredRooms,
+                               rooms,
+                               activeRoom,
+                               deleteRoom,
+                               setActiveRoom,
+                               history,
+                               loadRooms,
+                               filteredRooms
+                           }: AllRoomsContainerComponent) => {
 
     const handleNewRoom = (title: string) => {
-        props.createRoom({userId: props.user.userId, title})
+        createRoom({userId: user.userId, title})
     }
 
     const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.value) {
-            return props.setFilteredRooms(props.rooms.filter(elem => elem.title.includes(e.target.value)))
+            return setFilteredRooms(rooms.filter((room: IRoom) => room.title.includes(e.target.value)))
         }
 
-        return props.setFilteredRooms(null)
+        return setFilteredRooms(null)
     }
 
     const handleChangeActive = async (id: string) => {
-        if (id !== props.activeRoom) {
-            const prevActiveRoom = props.activeRoom
-            socket.emit('ROOM:EXIT', {userName: props.user.username, roomId: prevActiveRoom})
+        if (id !== activeRoom) {
+            const prevActiveRoom = activeRoom
+            socket.emit('ROOM:EXIT', {userName: user.username, roomId: prevActiveRoom})
 
-            props.setActiveRoom(id)
-            if (window.isMobileVersion) props.history.push('/chat')
-            socket.emit('ROOM:JOIN', {user: props.user, roomId: id})
+            setActiveRoom(id)
+            if (window.isMobileVersion) history.push('/chat')
+            socket.emit('ROOM:JOIN', {user: user, roomId: id})
         }
     }
 
     const handleRemove = (id: string) => {
-        props.deleteRoom(id)
+        deleteRoom(id)
     }
 
     const handleReload = () => {
-        props.loadRooms()
+        loadRooms()
     }
 
     return (
@@ -78,28 +89,28 @@ const AllRoomsContainer = (props: AllRoomsContainerProps) => {
                 />
             </Row>
             <List
-                userId={props.user.userId}
+                userId={user.userId}
                 handleRemove={handleRemove}
                 handleChangeActive={handleChangeActive}
-                filteredRooms={props.filteredRooms}
-                activeRoom={props.activeRoom}
-                rooms={props.rooms}
+                filteredRooms={filteredRooms}
+                activeRoom={activeRoom}
+                rooms={rooms}
             />
         </Container>
     )
 }
 
 
-const mapStateToProps = (state: AllRoomsContainerStore) => ({
+const mapStateToProps = (state: AllRoomsContainerComponentStore) => ({
     rooms: state.rooms.rooms,
     user: state.user,
     filteredRooms: state.rooms.filteredRooms,
     activeRoom: state.rooms.activeRoom
 })
 
-const mapDispatchToProps = (dispatch: (arg0: AllRoomsContainerDispatch) => any) => ({
-    setFilteredRooms: (filteredRooms: Room[]) => dispatch(setFilteredRooms(filteredRooms)),
-    setActiveRoom: (room: string) => dispatch(setActiveRoom(room)),
+const mapDispatchToProps = (dispatch: (arg0: AllRoomsContainerComponentDispatch) => any) => ({
+    setFilteredRooms: (filteredRooms: IRoom[] | null | []) => dispatch(setFilteredRooms(filteredRooms)),
+    setActiveRoom: (room: string | null) => dispatch(setActiveRoom(room)),
     createRoom: (data: { userId: string, title: string }) => dispatch(createRoomStart(data)),
     deleteRoom: (id: string) => dispatch(deleteRoomStart(id)),
     loadRooms: () => dispatch(loadRoomsStart()),

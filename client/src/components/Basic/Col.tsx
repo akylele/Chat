@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components';
-import {ICol} from "./types";
+import {IColComponent} from "./types";
 
 const ColContainer = styled.div`
   display: flex;
@@ -9,7 +9,7 @@ const ColContainer = styled.div`
   margin-bottom: 20px;
 `;
 
-const Col = ({children}: ICol) => (
+const Col = ({children}: IColComponent) => (
     <ColContainer>
         {children}
     </ColContainer>

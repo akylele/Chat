@@ -6,7 +6,7 @@ import {login, logout} from "../../../api/auth";
 import {setStep} from "../../actions/ui";
 import {Toast} from "../../../hooks/message.hook";
 import {socket} from "../../../socket";
-import {Login, Logout} from "../../../api/types";
+import {ILoginData, ILogoutData} from "../../../api/types";
 import {ResponseGenerator} from "../types";
 
 export default function* authWatcher() {
@@ -14,7 +14,7 @@ export default function* authWatcher() {
     yield takeLatest(LOGOUT_START, logoutSaga)
 }
 
-function* loginSaga({payload}: { payload: Login, type: string }) {
+function* loginSaga({payload}: { payload: ILoginData, type: string }) {
     try {
         const {username, password, socketId} = payload
         const response: ResponseGenerator = yield call(login, {username, password, socketId})

@@ -1,6 +1,6 @@
 import React from 'react'
 import styled, {css} from 'styled-components';
-import {IRow} from "./types";
+import {IRowComponent} from "./types";
 
 const RowContainer = styled.div<{position: string}>`
   display: flex;
@@ -30,7 +30,7 @@ const RowContainer = styled.div<{position: string}>`
   `}
 `;
 
-const Row = ({position, children}: IRow) => (
+const Row = ({position, children}: IRowComponent) => (
     <RowContainer position={position}>
         {children}
     </RowContainer>

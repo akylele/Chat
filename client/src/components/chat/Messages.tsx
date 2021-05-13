@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import styled, {css} from 'styled-components';
 
 import {getTime, getTimeShort} from "../../utils/dateFormatter";
-import {Message} from '../../redux/actions/types'
+import {IMessage} from '../../redux/actions/types'
 
 const Container = styled.div`
   height: 100vh;
@@ -60,8 +60,8 @@ const Name = styled.div<{personal:boolean}>`
   `}
 `
 
-const Messages = ({messages, username}:{messages: Message[], username: string}) => {
-    const personalMessage = (message: Message) => message.from === username
+const Messages = ({messages, username}:{messages: IMessage[], username: string}) => {
+    const personalMessage = (message: IMessage) => message.from === username
 
     useEffect(() => {
         document.getElementById('last-message')?.scrollIntoView()
@@ -69,7 +69,7 @@ const Messages = ({messages, username}:{messages: Message[], username: string}) 
 
     return (
         <Container id="messages">
-            {messages.map((message: Message, index: number) => {
+            {messages.map((message: IMessage, index: number) => {
                 if (message.from === 'service') {
                     return (
                         <ServiceMessage

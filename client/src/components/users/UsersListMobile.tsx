@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components';
-import {Room, User} from "../../redux/actions/types";
+import {IRoom, IUserData} from "../../redux/actions/types";
 
 const Details = styled.details`
   position: absolute;
@@ -22,11 +22,11 @@ const Ul = styled.ul`
 `
 
 
-const UsersListMobile = ({currentRoom}: {currentRoom: Room}) => (
+const UsersListMobile = ({currentRoom}: {currentRoom: IRoom}) => (
     <Details>
         <Summary>Пользователи</Summary>
         <Ul>
-            {currentRoom.users.map((user: User) => (
+            {currentRoom.users.map((user: IUserData) => (
                 <li>{user.name}{' '}{currentRoom.creator === user._id && ' - создатель'}</li>
             ))}
         </Ul>

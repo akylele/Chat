@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components';
-import {ICircleButton} from "./types";
+import {ICircleButtonComponent} from "./types";
 
 const CircleButtonContainer = styled.div`
   width: 35px;
@@ -14,7 +14,7 @@ const CircleButtonContainer = styled.div`
   margin-left: 5px;
 `;
 
-const CircleButton = ({icon, handleClick}: ICircleButton) => (
+const CircleButton = ({icon, handleClick}: ICircleButtonComponent) => (
     <CircleButtonContainer onClick={handleClick}>
         <i className="material-icons">{icon}</i>
     </CircleButtonContainer>
