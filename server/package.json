@@ -4,7 +4,7 @@
   "description": "chat",
   "main": "index.js",
   "scripts": {
-    "server": "nodemon -r esm app.js",
+    "server": "nodemon app.js",
     "client": "npm run start --prefix ../client",
     "dev": "concurrently \"npm run server\" \" npm run client\""
   },
@@ -28,6 +28,7 @@
   },
   "devDependencies": {
     "concurrently": "^6.0.2",
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.7",
+    "typescript": "^4.2.4"
   }
 }

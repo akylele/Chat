@@ -2,7 +2,7 @@ const {Router} = require('express')
 const {check, validationResult} = require('express-validator')
 const router = Router()
 
-const User = require('../models/User')
+const User = require('../models/User.ts')
 
 router.post(
     '/login',

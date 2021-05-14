@@ -2,7 +2,7 @@ const {Router} = require('express')
 const {check, validationResult} = require('express-validator')
 const router = Router()
 
-const Room = require('../models/Room')
+const Room = require('../models/Room.ts')
 
 router.post(
     '/create',
