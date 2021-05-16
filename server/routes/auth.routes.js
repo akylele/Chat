@@ -3,6 +3,7 @@ const {check, validationResult} = require('express-validator')
 const router = Router()
 
 const User = require('../models/User')
+const Room = require('../models/Room')
 
 router.post(
     '/login',
@@ -25,7 +26,11 @@ router.post(
 
         try {
             const candidate = await User.findOne({username})
-            if (candidate && candidate.password === password) {
+            const candidateRooms = await Room.findOne({'users.socketId': socketId})
+            if(candidate && candidate.password === password && candidateRooms.length > 0){
+                res.status(409).json({
+                    message: `данный пользователь уже онлайн`})
+            } else if (candidate && candidate.password === password) {
                 res.status(201).json({
                     message: `Вы вошли - ${username}`,
                     userId: candidate._id,

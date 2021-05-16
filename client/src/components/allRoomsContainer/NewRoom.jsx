@@ -7,6 +7,12 @@ import Title from "../Basic/Title";
 const NewRoom = ({handleNewRoom}) => {
     const [value, setValue] = useState('')
 
+    const handleKeyPress = e => {
+        if (e.key === 'Enter') {
+            handleNewRoom(value)
+        }
+    }
+
     return (
         <>
             <Row>
@@ -14,6 +20,7 @@ const NewRoom = ({handleNewRoom}) => {
             </Row>
             <Row>
             <Input
+                onKeyPress={handleKeyPress}
                 icon={'add'}
                 handleChange={(e) => setValue(e.target.value)}
                 handleClick={() => handleNewRoom(value)}

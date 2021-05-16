@@ -42,6 +42,7 @@ const ServiceMessage = styled.div`
   background-color: #b9b9b9;
   opacity: 0.8;
   margin: 0 auto 15px auto;
+font-size: 11px;
 `
 
 const Name = styled.div`

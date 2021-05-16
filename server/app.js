@@ -27,7 +27,7 @@ mongoose.connect(
         useCreateIndex: true
     })
     .then(() => console.log(`mongo has been started`))
-    .catch(error => console.log('==========>error', error))
+    .catch(() => {})
 
 
 server.listen(PORT, () => {
