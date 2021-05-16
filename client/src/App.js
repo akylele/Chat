@@ -7,7 +7,7 @@ import {loadRoomsStart, newMessagesForRoom, newUsersForRoom, setActiveRoom} from
 import {Toast} from "./hooks/message.hook";
 import {setStep} from "./redux/actions/ui";
 
-import useRoutes from '../src/routes'
+import useRoutes from './routes'
 import Loader from "./components/Basic/Loader";
 
 import './App.css';

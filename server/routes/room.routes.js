@@ -2,7 +2,7 @@ const {Router} = require('express')
 const {check, validationResult} = require('express-validator')
 const router = Router()
 
-const Room = require('../models/Room')
+const Room = require('../models/Room.js')
 
 router.post(
     '/create',
@@ -48,21 +48,7 @@ router.get(
     async (req, res) => {
         try {
             const rooms = await Room.find({}).lean()
-
             return res.status(200).json(rooms)
-        } catch (e) {
-            return res.status(500).json({message: 'ошибка получения'})
-        }
-    })
-
-router.get(
-    '/:id',
-    async (req, res) => {
-        try {
-            const id = req.params.id
-            const room = await Room.find({_id: id})
-
-            return res.status(200).json(room)
         } catch (e) {
             return res.status(500).json({message: 'ошибка получения'})
         }
