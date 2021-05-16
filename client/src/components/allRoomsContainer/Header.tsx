@@ -28,7 +28,7 @@ const Header = (props: IHeader) => {
     return (
         <>
             <Row position={'sb'}>
-                <Title text={'Чаты'}/>
+                <Title text={'Комнаты'}/>
                 <MiniRow>
                     <CircleButton
                         icon={isAdd ? 'remove' : 'add'}

@@ -1,12 +1,17 @@
 import socket from 'socket.io'
 
-import Room from "../models/Room.js";
+import Room from "../models/Room";
+import User from "../models/User";
+import {BASE_URL_CLIENT} from "../../client/src/constants/api";
 
 export default (http) => {
     const io = socket(http, {
         cors: {
-            origin: "http://localhost:3000",
-            credentials: true
+            origin: BASE_URL_CLIENT,
+            credentials: true,
+            extraHeaders: {
+                "my-custom-header": "abcd"
+            }
         }
     });
 
@@ -72,7 +77,7 @@ export default (http) => {
                                 users: newUsers
                             }
                     })
-                    io.sockets.to(roomId).emit('ROOM:UPDATE_MESSAGES', {messages: newMessages, roomId});
+                    socket.to(roomId).emit('ROOM:UPDATE_MESSAGES', {messages: newMessages, roomId});
                     socket.to(roomId).emit('ROOM:UPDATE_USERS', {users: newUsers, roomId});
                     socket.leave(roomId);
                 } catch (e) {
@@ -107,18 +112,27 @@ export default (http) => {
         })
 
         socket.on('disconnect', async () => {
-            const candidate = await Room.find({'users.socketId': socket.id})
-            if (candidate.length > 0) {
-                const newUsers = candidate[0].users.filter(user => user.socketId !== socket.id)
-                await Room.updateOne({_id: candidate[0]._id}, {
-                    $set:
-                        {
-                            users: newUsers
-                        }
-                })
-                const roomId = candidate[0]._id
-                io.in(roomId).emit('ROOM:UPDATE_USERS', {users: newUsers, roomId});
-                socket.to(roomId).emit('ROOM:UPDATE_USERS', {users: newUsers, roomId});
+            const candidateRoom = await Room.findOne({'users.socketId': socket.id})
+            const candidateUser = await User.findOne({'socketId': socket.id})
+            if (candidateRoom && candidateUser) {
+                try {
+                    const roomId = candidateRoom._id
+                    const newUsers = candidateRoom.users.filter(user => user.socketId !== socket.id)
+                    const newMessages = candidateRoom.messages.concat({
+                        from: 'service',
+                        text: `${candidateUser.username} вышел`,
+                        date: new Date(Date.now()).toISOString()
+                    })
+                    await Room.updateOne({_id: roomId}, {
+                        $set:
+                            {
+                                messages: newMessages,
+                                users: newUsers
+                            }
+                    })
+                    io.emit('ROOM:UPDATE_USERS', {users: newUsers, roomId});
+                } catch (e) {
+                }
             }
         });
     });

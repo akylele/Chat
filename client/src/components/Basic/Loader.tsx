@@ -4,7 +4,7 @@ import './loader.css'
 
 const Loader = (props: { userLoader: boolean; roomsLoader: boolean; }) => {
 
-    if (!props.userLoader && !props.roomsLoader) {
+    if (!props.userLoader) {
         return null
     }
 
@@ -24,7 +24,7 @@ const Loader = (props: { userLoader: boolean; roomsLoader: boolean; }) => {
 
 const mapStateToProps = (state: { user: { loading: boolean; }; rooms: { loading: boolean; }; }) => ({
     userLoader: state.user.loading,
-    roomsLoader: state.rooms.loading,
+    // roomsLoader: state.rooms.loading,
 })
 
 export default connect(mapStateToProps, null)(Loader)

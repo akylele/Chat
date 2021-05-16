@@ -8,6 +8,12 @@ import {NewRoomComponent} from "./types";
 const NewRoom = ({handleNewRoom}: NewRoomComponent) => {
     const [value, setValue] = useState('')
 
+    const handleKeyPress = e => {
+        if (e.key === 'Enter') {
+            handleNewRoom(value)
+        }
+    }
+
     return (
         <>
             <Row>
@@ -15,6 +21,7 @@ const NewRoom = ({handleNewRoom}: NewRoomComponent) => {
             </Row>
             <Row>
             <Input
+                onKeyPress={handleKeyPress}
                 icon={'add'}
                 handleChange={(e) => setValue(e.target.value)}
                 handleClick={() => handleNewRoom(value)}

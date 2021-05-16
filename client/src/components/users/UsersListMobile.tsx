@@ -14,7 +14,7 @@ const Details = styled.details`
 `
 
 const Summary = styled.summary`
-
+  outline: none;
 `
 
 const Ul = styled.ul`

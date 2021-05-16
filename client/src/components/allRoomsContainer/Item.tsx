@@ -1,8 +1,8 @@
 import React from 'react'
 import styled, {css} from 'styled-components';
 
-import {getTimeShort} from "../../utils/dateFormatter";
 import {IItemComponent} from "./types";
+import {getTime} from "../../utils/dateFormatter";
 
 const Block = styled.div<{active: boolean}>`
   width: 100%;
@@ -79,7 +79,7 @@ const Item = ({active, handleChangeActive, room, handleRemove, userId}: IItemCom
         >
             <Row>
                 <Title>{room.title}</Title>
-                {room.dateOfLastMessage && <Date>{getTimeShort(room.dateOfLastMessage)}</Date>}
+                {room.dateOfLastMessage && <Date>{getTime(room.dateOfLastMessage)}</Date>}
             </Row>
             <Row>
                 <Message>{room.lastMessage}</Message>

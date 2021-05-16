@@ -53,9 +53,8 @@ const Input = ({icon, handleChange, handleClick, value, onKeyPress}: IInputCompo
     const inputRef = useRef<any>()
 
     const send = () => {
-        if (handleClick) {
-            handleClick()
-        }
+        if(!handleClick) return
+        handleClick()
         inputRef.current.focus()
     }
 
