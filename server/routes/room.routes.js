@@ -46,13 +46,10 @@ router.post(
 router.get(
     '/getAll',
     async (req, res) => {
-        console.log('==========>111', 111)
         try {
             const rooms = await Room.find({}).lean()
-            console.log('==========>rooms', rooms)
             return res.status(200).json(rooms)
         } catch (e) {
-            console.log('==========>222', 222)
             return res.status(500).json({message: 'ошибка получения'})
         }
     })

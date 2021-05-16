@@ -27,7 +27,7 @@ router.post(
         try {
             const candidate = await User.findOne({username})
             const candidateRooms = await Room.findOne({'users.socketId': socketId})
-            if(candidate && candidate.password === password && candidateRooms.length > 0){
+            if(candidate && candidate.password === password && candidateRooms?.length > 0){
                 res.status(409).json({
                     message: `данный пользователь уже онлайн`})
             } else if (candidate && candidate.password === password) {

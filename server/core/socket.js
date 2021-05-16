@@ -2,7 +2,7 @@ import socket from 'socket.io'
 
 import Room from "../models/Room";
 import User from "../models/User";
-import {BASE_URL_CLIENT} from "../../client/src/constants/api";
+import {BASE_URL_CLIENT} from "../../client/src/constants/api.ts";
 
 export default (http) => {
     const io = socket(http, {
