@@ -4,7 +4,7 @@
   "description": "chat",
   "main": "index.js",
   "scripts": {
-    "server": "nodemon app.js",
+    "server": "nodemon -r esm app.js",
     "client": "npm run start --prefix ../client",
     "dev": "concurrently \"npm run server\" \" npm run client\""
   },

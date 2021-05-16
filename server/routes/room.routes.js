@@ -2,7 +2,7 @@ const {Router} = require('express')
 const {check, validationResult} = require('express-validator')
 const router = Router()
 
-const Room = require('../models/Room.ts')
+const Room = require('../models/Room.js')
 
 router.post(
     '/create',
@@ -46,11 +46,13 @@ router.post(
 router.get(
     '/getAll',
     async (req, res) => {
+        console.log('==========>111', 111)
         try {
             const rooms = await Room.find({}).lean()
-
+            console.log('==========>rooms', rooms)
             return res.status(200).json(rooms)
         } catch (e) {
+            console.log('==========>222', 222)
             return res.status(500).json({message: 'ошибка получения'})
         }
     })

@@ -27,5 +27,5 @@ export interface IChatComponent {
     rooms: IRoom[]
     setActiveRoom: (arg0: null | string) => void
     username: string
-    history: History
+    history?: History
 }

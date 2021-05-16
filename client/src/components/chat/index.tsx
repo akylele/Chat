@@ -96,7 +96,7 @@ const Chat = (props: IChatComponent) => {
         socket.emit('ROOM:EXIT', {userName: props.username, roomId: prevActiveRoom})
 
         props.setActiveRoom(null)
-        props.history.push('/pickup')
+        props.history?.push('/pickup')
     }
 
     return (

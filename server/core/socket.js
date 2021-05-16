@@ -1,6 +1,6 @@
 import socket from 'socket.io'
 
-import Room from "../models/Room.ts";
+import Room from "../models/Room.js";
 
 export default (http) => {
     const io = socket(http, {
