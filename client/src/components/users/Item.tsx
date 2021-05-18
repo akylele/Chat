@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components';
 
-import {IUserData, IUserStore} from "../../redux/actions/types";
+import {IUserData} from "../../redux/actions/types";
 
 const Block = styled.div`
   width: 100%;

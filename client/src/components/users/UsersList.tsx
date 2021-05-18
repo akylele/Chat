@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Header from "./Header";
 import List from "./List";
 import Row from "../Basic/Row";
-import {IRoom, IUserData, IUserStore} from "../../redux/actions/types";
+import {IRoom} from "../../redux/actions/types";
 
 const Container = styled.div`
   width: 40%;

@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components';
 
 import Item from "./Item";
-import {IUserData, IUserStore} from "../../redux/actions/types";
+import {IUserData} from "../../redux/actions/types";
 import {IListComponent} from "./types";
 
 const Container = styled.div`

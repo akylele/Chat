@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import styled, {css} from 'styled-components';
 
-import {getTime, getTimeShort} from "../../utils/dateFormatter";
+import {getTime} from "../../utils/dateFormatter";
 import {IMessage} from '../../redux/actions/types'
 
 const Container = styled.div`
@@ -16,7 +16,6 @@ const Container = styled.div`
 
 const Message = styled.div<{personal: boolean}>`
   position: relative;
-  //min-height: 40px;
   padding: 10px 10px 20px 10px;
   border-radius: 15px 5px 15px 5px;
   left: 0;

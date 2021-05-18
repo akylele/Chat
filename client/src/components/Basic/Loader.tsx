@@ -24,7 +24,6 @@ const Loader = (props: { userLoader: boolean; roomsLoader: boolean; }) => {
 
 const mapStateToProps = (state: { user: { loading: boolean; }; rooms: { loading: boolean; }; }) => ({
     userLoader: state.user.loading,
-    // roomsLoader: state.rooms.loading,
 })
 
 export default connect(mapStateToProps, null)(Loader)
