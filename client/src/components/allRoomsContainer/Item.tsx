@@ -82,7 +82,7 @@ const Item = ({active, handleChangeActive, room, handleRemove, userId}: IItemCom
                 {room.dateOfLastMessage && <Date>{getTime(room.dateOfLastMessage)}</Date>}
             </Row>
             <Row>
-                <Message>{room.lastMessage}</Message>
+                <Message>{room.lastMessageFrom && room.lastMessageFrom + ': '}{room.lastFile ? 'file' : room.lastMessage}</Message>
             </Row>
         </Col>
         {room.creator === userId &&

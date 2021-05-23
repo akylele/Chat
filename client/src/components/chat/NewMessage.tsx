@@ -11,7 +11,7 @@ const Container = styled.div`
 `;
 
 
-const NewMessage = (props: { sendMessage: (arg0: string) => void; }) => {
+const NewMessage = (props: { sendMessage: (arg0: any) => void; sendFile: (arg0: any) => void}) => {
     const [message, setMessage] = useState('')
 
     const inputChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
@@ -23,6 +23,10 @@ const NewMessage = (props: { sendMessage: (arg0: string) => void; }) => {
             setMessage('')
             props.sendMessage(message)
         }
+    }
+
+    const handleAttachFile = (image: any) => {
+        props.sendFile(URL.createObjectURL(image.target.files[0]))
     }
 
     const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -37,7 +41,9 @@ const NewMessage = (props: { sendMessage: (arg0: string) => void; }) => {
                 onKeyPress={handleKeyPress}
                 value={message}
                 icon={'send'}
+                iconAttachFile={'attach_file'}
                 handleClick={handleMessage}
+                handleAttachFile={handleAttachFile}
                 handleChange={(e: ChangeEvent<HTMLInputElement>) => inputChangeValue(e)}
             />
         </Container>

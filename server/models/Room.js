@@ -9,6 +9,12 @@ const schema = new Schema({
     lastMessage:{
         type:String,
     },
+    lastMessageFrom:{
+        type:String,
+    },
+    lastFile:{
+        type: String,
+    },
     dateOfLastMessage: {
         type: Date,
     },
@@ -23,6 +29,7 @@ const schema = new Schema({
         type: [{
             from: String,
             text: String,
+            file: String,
             date: Date
         }],
     },

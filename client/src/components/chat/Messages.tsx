@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled, {css} from 'styled-components';
 
 import {getTime} from "../../utils/dateFormatter";
@@ -14,7 +14,7 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const Message = styled.div<{personal: boolean}>`
+const Message = styled.div<{ personal: boolean }>`
   position: relative;
   padding: 10px 10px 20px 10px;
   border-radius: 15px 5px 15px 5px;
@@ -42,10 +42,10 @@ const ServiceMessage = styled.div`
   background-color: #b9b9b9;
   opacity: 0.8;
   margin: 0 auto 15px auto;
-font-size: 11px;
+  font-size: 11px;
 `
 
-const Name = styled.div<{personal:boolean}>`
+const Name = styled.div<{ personal: boolean }>`
   position: absolute;
   padding: 5px 10px;
   bottom: 0;
@@ -60,12 +60,17 @@ const Name = styled.div<{personal:boolean}>`
   `}
 `
 
-const Messages = ({messages, username}:{messages: IMessage[], username: string}) => {
+const Messages = ({messages, username}: { messages: IMessage[], username: string }) => {
+    const [fullScreen, setFullScreen] = useState(false)
     const personalMessage = (message: IMessage) => message.from === username
 
     useEffect(() => {
         document.getElementById('last-message')?.scrollIntoView()
     })
+
+    const fullScreenHandler = () => {
+        setFullScreen(!fullScreen)
+    }
 
     return (
         <Container id="messages">
@@ -89,7 +94,14 @@ const Messages = ({messages, username}:{messages: IMessage[], username: string})
                             <Name personal={personalMessage(message)}>
                                 {personalMessage(message) ? 'Вы' : message.from} {getTime(message.date)}
                             </Name>
-                            {message.text}
+                            {message.file ?
+                                <img
+                                    style={{width: '100%'}}
+                                    src={message.file}
+                                    alt=""
+                                    onClick={fullScreenHandler}
+                                />
+                                : message.text}
                         </Message>
                     )
                 }

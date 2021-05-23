@@ -1,4 +1,5 @@
 import socket from 'socket.io'
+const formidable = require('formidable');
 
 import Room from "../models/Room";
 import User from "../models/User";
@@ -85,6 +86,34 @@ export default (http) => {
             }
         });
 
+        socket.on('ROOM:NEW_FILE', async ({file, username, roomId}) => {
+            const candidate = await Room.findOne({_id: roomId})
+            if (candidate) {
+                const dateNow = Date.now()
+                const newMessages = candidate.messages.concat({
+                    from: username,
+                    file,
+                    date: dateNow
+                })
+                try {
+                    await Room.updateOne({_id: roomId}, {
+                        $set:
+                            {
+                                lastMessageFrom: username,
+                                dateOfLastMessage: dateNow,
+                                lastFile: file,
+                                lastMessage: '',
+                                messages: newMessages
+                            }
+                    })
+                    io.sockets.to(roomId).emit('ROOM:UPDATE_MESSAGES', {messages: newMessages, roomId});
+                    io.sockets.emit('ROOM:UPDATE_ROOMS');
+                } catch (e) {
+
+                }
+            }
+        })
+
         socket.on('ROOM:NEW_MESSAGE', async ({message, username, roomId}) => {
             const candidate = await Room.findOne({_id: roomId})
             if (candidate) {
@@ -100,6 +129,8 @@ export default (http) => {
                             {
                                 dateOfLastMessage: dateNow,
                                 lastMessage: message,
+                                lastFile: '',
+                                lastMessageFrom: username,
                                 messages: newMessages
                             }
                     })

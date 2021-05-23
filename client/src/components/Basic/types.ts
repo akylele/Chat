@@ -3,8 +3,10 @@ import {IUserStore} from "../../redux/actions/types";
 
 export interface IInputComponent {
     icon?: string,
+    iconAttachFile?: string,
     handleChange: (e: ChangeEvent<HTMLInputElement>) => void,
     handleClick?: () => void,
+    handleAttachFile?: (e:ChangeEvent<HTMLInputElement>) => void,
     value?: string,
     onKeyPress?: (e: KeyboardEvent<HTMLInputElement>) => void | undefined
 }

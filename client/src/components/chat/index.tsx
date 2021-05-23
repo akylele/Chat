@@ -49,7 +49,8 @@ const initialState: IRoom = {
     title: '',
     creator: '',
     dateOfLastMessage: '',
-    lastMessage: ''
+    lastMessage: '',
+    lastMessageFrom: ''
 }
 
 const Chat = (props: IChatComponent) => {
@@ -69,9 +70,15 @@ const Chat = (props: IChatComponent) => {
         }
     }, [props.rooms])
 
-    const sendMessage = (message: string) => {
+    const sendMessage = (message: any) => {
         socket.emit('ROOM:NEW_MESSAGE', {
             message, username: props.username, roomId: currentRoom._id
+        })
+    }
+
+    const sendFile = (file: string) => {
+        socket.emit('ROOM:NEW_FILE', {
+            file, username: props.username, roomId: currentRoom._id
         })
     }
 
@@ -105,7 +112,7 @@ const Chat = (props: IChatComponent) => {
             <Container>
                 {window.isMobileVersion && <UsersListMobile currentRoom={currentRoom}/>}
                 {renderMessages()}
-                <NewMessage sendMessage={sendMessage}/>
+                <NewMessage sendMessage={sendMessage} sendFile={sendFile}/>
             </Container>
             {!window.isMobileVersion && <UsersList currentRoom={currentRoom}/>}
         </>

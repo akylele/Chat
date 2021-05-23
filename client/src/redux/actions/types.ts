@@ -6,6 +6,8 @@ export interface IRoom {
     creator: string,
     dateOfLastMessage: string,
     lastMessage: string
+    lastMessageFrom: string
+    lastFile?: string
 }
 
 export interface IUserData {
@@ -27,5 +29,6 @@ export interface IUserStore {
 export interface IMessage {
     from: string,
     text: string,
+    file?: string,
     date: string
 }

@@ -11,7 +11,7 @@ const InputInnerWrap = styled.div`
   border-radius: 15px !important;
 `;
 
-const Wrap = styled.div<{onKeyPress: React.KeyboardEventHandler<HTMLDivElement> & ((e: KeyboardEvent<HTMLInputElement>) => void) | undefined}>`
+const Wrap = styled.div<{ onKeyPress: React.KeyboardEventHandler<HTMLDivElement> & ((e: KeyboardEvent<HTMLInputElement>) => void) | undefined }>`
   width: 100% !important;
   top: 50% !important;
 `;
@@ -45,15 +45,27 @@ const Button = styled.div`
   font-size: 20px;
 `;
 
-const Icon = styled.i`
+const Icon = styled.i<any>`
   line-height: 36px
 `
 
-const Input = ({icon, handleChange, handleClick, value, onKeyPress}: IInputComponent) => {
+const InputAttachFile = styled.input`
+  display: none
+`
+
+const Input = ({
+                   icon,
+                   handleChange,
+                   handleClick,
+                   value,
+                   onKeyPress,
+                   iconAttachFile,
+                   handleAttachFile
+               }: IInputComponent) => {
     const inputRef = useRef<any>()
 
     const send = () => {
-        if(!handleClick) return
+        if (!handleClick) return
         handleClick()
         inputRef.current.focus()
     }
@@ -65,6 +77,18 @@ const Input = ({icon, handleChange, handleClick, value, onKeyPress}: IInputCompo
                     ? <InputValue borderFull={!icon} onChange={handleChange} value={value} ref={inputRef}/>
                     : <InputValue borderFull={!icon} onChange={handleChange} ref={inputRef}/>
                 }
+                {iconAttachFile && (
+                    <>
+                        <InputAttachFile type="file" multiple onChange={handleAttachFile} id="inputAttachFile"/>
+                        <label htmlFor="inputAttachFile">
+                            <Icon
+                                className="material-icons"
+                            >
+                                {iconAttachFile}
+                            </Icon>
+                        </label>
+                    </>
+                )}
                 {icon && (
                     <Button>
                         <Icon
